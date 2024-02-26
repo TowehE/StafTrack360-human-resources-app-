@@ -317,6 +317,12 @@ exports.signOut = async (req, res) => {
     try {
         const userId = req.params.userId
         const user = await userModel.findById(userId)
+       
+        if(!user){
+            return res.status(404).json({
+                message: 'Staff not found'
+            })
+        }
 
 // invalidate the token by  setting it to null
         user.token = null;
