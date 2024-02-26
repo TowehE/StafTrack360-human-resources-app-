@@ -40,7 +40,7 @@ router.post('/forgetPassword', forgotPassword);
 router.get('/resetPass/:userId', resetPasswordPage);
 
 //endpoint to reset user Password
-router.post('/resetUser/:userId', resetPassword);
+router.post('/resetStaff/:userId', resetPassword);
 
 //endpoint to sign out a user
 router.post("/logOut/:userId", logOut)

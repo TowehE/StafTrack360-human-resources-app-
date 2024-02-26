@@ -2,7 +2,7 @@ const express = require('express');
 
 const router = express.Router();
 
-const { AddperformanceRating, viewOne, viewAll, updatePerformance, deleteScore, getPerformanceByCreatedAt } = require('../controller/peformanceRatingController');
+const { AddperformanceRating, viewOne, viewAll, updatePerformance, deleteScore, getPerformanceByCreatedAt, getPerformanceByCompanyId} = require('../controller/peformanceRatingController');
 
 const { authenticate, authorizeRole } = require('../middleware/authentication');
 
@@ -25,6 +25,11 @@ router.delete('/deleteScore/:staffId/:companyId',  authenticate, authorizeRole('
 
 //endpoint to rate staff monthly, yearly and quarterly 
 router.get('/performanceperinterval/:staffId', getPerformanceByCreatedAt);
+
+
+//endpoint to rate all staff monthly, yearly and quarterly
+router.get('/company/:companyId/performance', authenticate, authorizeRole("admin"), getPerformanceByCompanyId);
+
 
 
 

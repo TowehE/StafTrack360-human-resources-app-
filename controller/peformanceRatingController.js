@@ -310,8 +310,54 @@ exports.getPerformanceByCreatedAt = async (req, res) => {
         });
     }
 }
+exports.getPerformanceByCompanyId = async (req, res) => {
+    try {
+        const companyId = req.params.companyId; // Assuming companyId is passed as a parameter
+        
+        // Fetch all staff members belonging to the specified company
+        const staffMembers = await newStaffModel.find({ companyId: companyId });
 
+        const responseData = {};
+        const intervals = ["monthly", "quarterly", "yearly"];
 
+        for (const staff of staffMembers) {
+            const staffId = staff._id;
+            const staffPerformance = {};
 
+            for (const interval of intervals) {
+                let startDate, endDate;
+
+                if (interval === 'monthly') {
+                    startDate = moment().startOf('month');
+                    endDate = moment().endOf('month');
+                } else if (interval === 'quarterly') {
+                    startDate = moment().startOf('quarter');
+                    endDate = moment().endOf('quarter');
+                } else if (interval === 'yearly') {
+                    startDate = moment().startOf('year');
+                    endDate = moment().endOf('year');
+                }
+
+                const performanceRatings = await performanceRatingModel.find({
+                    staffId,
+                    createdAt: { $gte: startDate, $lte: endDate }
+                });
+
+                staffPerformance[interval] = performanceRatings;
+            }
+
+            responseData[staffId] = staffPerformance;
+        }
+
+        return res.status(200).json({
+            message: 'Performance ratings found for all staff members of the specified company',
+            data: responseData
+        });
+    } catch (error) {
+        return res.status(500).json({
+            message: "Internal Server Error: " + error.message
+        });
+    }
+}
 
 
