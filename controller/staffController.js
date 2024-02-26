@@ -374,11 +374,11 @@ exports.resetPassword = async (req, res) => {
                 message: "Password cannot be empty",
             });
         }
-
+       
         const salt = bcrypt.genSaltSync(12);
-        const hashPassword = bcrypt.hashSync(password, salt);
+        const hashedPassword = bcrypt.hashSync(password, salt);
 
-        const reset = await newStaffModel.findByIdAndUpdate(userId, { password: hashPassword }, { new: true });
+        const reset = await newStaffModel.findByIdAndUpdate(userId, { password: hashedPassword }, { new: true });
         return res.status(200).json({
             message: "Password reset successfully",
         });

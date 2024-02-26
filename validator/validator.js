@@ -101,8 +101,8 @@ const validateForgotPassword = (data) => {
     try {
         const validateSchema = joi.object({
             businessEmail: joi.string().email({tlds: {allow: false} }).pattern(businessEmailPattern).required().messages({
-                'string.email': 'Please provide a valid email address',
-                'string.pattern.base': 'Please provide a business email address',
+                'string.email': 'Please provide a valid business email address',
+                'string.pattern.base': 'Please provide your business email address',
                 'any.required': 'Email is required'
             }),
         })

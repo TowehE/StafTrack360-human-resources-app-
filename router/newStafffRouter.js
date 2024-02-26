@@ -37,7 +37,7 @@ router.post('/changePass/:userId', changePassword);
 router.post('/forgetPassword', forgotPassword);
 
 //endpoint for reset Password Page
-router.get('/reset/:userId', resetPasswordPage);
+router.get('/resetPass/:userId', resetPasswordPage);
 
 //endpoint to reset user Password
 router.post('/resetUser/:userId', resetPassword);
