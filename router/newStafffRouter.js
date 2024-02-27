@@ -65,7 +65,7 @@ router.put("/upload/:userId", uploadImage)
 
 //endpint to update staff da ta
 router.put("/updateStaff/:userId", updateProfile)
-
+      
 //endpint to update staff data  as an admin
 router.put("/updateStaffAdmin/:userId", authenticate, authorizeRole('admin'), updateProfileAdmin)
 
