@@ -4,31 +4,31 @@ const router = express.Router();
 
 const { AddperformanceRating, viewOne, viewAll, updatePerformance, deleteScore, getPerformanceByCreatedAt, getPerformanceByCompanyId} = require('../controller/peformanceRatingController');
 
-const { authenticate, authorizeRole } = require('../middleware/authentication');
+const { authenticate, authorizeRole, checkPremiumAccess } = require('../middleware/authentication');
 
 //endpoint to add performance rating fora staff
-router.post('/addperf/:staffId/:companyId', authenticate, authorizeRole('admin','hod', 'cto', 'manager'), AddperformanceRating);
+router.post('/addperf/:staffId/:companyId', authenticate, authorizeRole('admin','hod', 'cto', 'manager'),checkPremiumAccess, AddperformanceRating);
 
 //endpoint to view performance rating fora staff
-router.get('/viewperf/:performanceID', viewOne);
+router.get('/viewperf/:performanceID', checkPremiumAccess,viewOne);
 
 //endpoint to view all staff performance
-router.get('/viewall/:businessId', authenticate, authorizeRole('admin',), viewAll);
+router.get('/viewall/:businessId', authenticate, authorizeRole('admin',),checkPremiumAccess, viewAll);
 
 
 //endpoint to update all staff performance
-router.get('/updateScore/:id/:performanceId', authenticate, authorizeRole('admin','hod', 'cto', 'manager'), updatePerformance);
+router.get('/updateScore/:id/:performanceId', authenticate, authorizeRole('admin','hod', 'cto', 'manager'), checkPremiumAccess, updatePerformance);
 
 //endpoint to delete all staff 
-router.delete('/deleteScore/:staffId/:companyId',  authenticate, authorizeRole('admin'),deleteScore);
+router.delete('/deleteScore/:staffId/:companyId',  authenticate, authorizeRole('admin'),checkPremiumAccess,deleteScore);
 
 
 //endpoint to rate staff monthly, yearly and quarterly 
-router.get('/performanceperinterval/:staffId', getPerformanceByCreatedAt);
+router.get('/performanceperinterval/:staffId', checkPremiumAccess,getPerformanceByCreatedAt);
 
 
 //endpoint to rate all staff monthly, yearly and quarterly
-router.get('/company/:companyId/performance', authenticate, authorizeRole("admin"), getPerformanceByCompanyId);
+router.get('/company/:companyId/performance', authenticate, authorizeRole("admin"), checkPremiumAccess,getPerformanceByCompanyId);
 
 
 

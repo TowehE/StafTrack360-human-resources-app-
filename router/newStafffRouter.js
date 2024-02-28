@@ -20,10 +20,10 @@ const { addStaff,
     // getTeamLeadRoute
 } = require('../controller/staffController');
 
-const { authenticate, authorizeRole } = require('../middleware/authentication');
+const { authenticate, authorizeRole, checkPremiumAccess } = require('../middleware/authentication');
 
 // //endpoint to send a staff a mail to join
-router.post('/addStaff/:companyId', authenticate, authorizeRole('admin'), addStaff)
+router.post('/addStaff/:companyId', authenticate, authorizeRole('admin'),checkPremiumAccess, addStaff)
 
 
 //endpoint to log in staff
@@ -52,19 +52,19 @@ router.post("/logOut/:userId", logOut)
 router.get("/search", searchStaff)
 
 //endpoint to get all staff members
-router.get('/allStaffs/:companyId', authenticate,authorizeRole('admin','hod', 'cto', 'manager'), getAllStaffs);
+router.get('/allStaffs/:companyId', authenticate,authorizeRole('admin','hod', 'cto', 'manager'),checkPremiumAccess, getAllStaffs);
 
 //endpoint to get a particular staff members
 router.get('/getOne/:id', aStaff);
 
 //endpoint to get all staff members
-router.get('/removeStaff/:id',authenticate, authorizeRole('admin'), removeStaff);
+router.get('/removeStaff/:id',authenticate, authorizeRole('admin'), checkPremiumAccess,removeStaff);
 
 //endpoint to upload a picture
-router.put("/upload/:userId", uploadImage)
+router.put("/upload/:userId",checkPremiumAccess, uploadImage)
 
-//endpint to update staff da ta
-router.put("/updateStaff/:userId", updateProfile)
+//endpint to update staff data
+router.put("/updateStaff/:userId",checkPremiumAccess, updateProfile)
       
 //endpint to update staff data  as an admin
 router.put("/updateStaffAdmin/:userId", authenticate, authorizeRole('admin'), updateProfileAdmin)
