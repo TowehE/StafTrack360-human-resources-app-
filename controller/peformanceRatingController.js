@@ -358,6 +358,7 @@ exports.getPerformanceByCompanyId = async (req, res) => {
             message: "Internal Server Error: " + error.message
         });
     }
-}
+};
+
 
 

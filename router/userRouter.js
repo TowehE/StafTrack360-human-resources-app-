@@ -22,7 +22,7 @@ const { authenticate } = require('../middleware/authentication');
 router.post('/signup', signUp);
 
 //endpoint to verify a registered user
-router.get('/verify/:id/:token', verify);
+router.get('/verify/:id', verify);
 
 //endpoint to login a verified user
 router.post('/login',logIn);

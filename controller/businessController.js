@@ -118,11 +118,11 @@ exports.signUp = async (req, res) => {
 exports.verify = async (req, res) => {
     try {
       const id = req.params.id;
-      const token = req.params.token;
+    //  const token = req.params.token;
       const user = await userModel.findById(id);
   
       // Verify the token
-      jwt.verify(token, process.env.secret);
+      jwt.verify(user.token, process.env.secret);
   
       // Update the user if verification is successful
       const updatedUser = await userModel.findByIdAndUpdate(id, { isVerified: true }, { new: true });
@@ -150,7 +150,7 @@ exports.verify = async (req, res) => {
         updatedUser.token = newtoken;
         updatedUser.save();
   
-        const link = `${req.protocol}://${req.get('host')}/api/v1/verify/${id}/${updatedUser.token}`;
+        const link = `${req.protocol}://${req.get('host')}/api/v1/verify/${id}`;
         sendEmail({
           email: updatedUser.businessEmail,
           html: generateDynamicEmail(updatedUser.businessName, link),
@@ -198,10 +198,11 @@ exports.logIn = async (req, res) => {
                 role: checkbusinessEmail.role
 
             }, process.env.secret, { expiresIn: "15h" });
-
+                
             if (checkbusinessEmail.isVerified === true) {
                 res.status(200).json({
                     message: "Welcome, " + checkbusinessEmail.businessName,
+                    data: checkbusinessEmail,
                     token: token
                 })
                 checkbusinessEmail.token = token;

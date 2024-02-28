@@ -48,15 +48,22 @@
         token: {
             type: String,
         },
+
+        isPremium: {
+             type: Boolean, 
+             default: false
+             },
+
         performanceRating: [{
             type: mongoose.Schema.Types.ObjectId,
             ref: 'performance'
         }],
+
         staff:[{
             type: mongoose.Schema.Types.ObjectId,
             ref: "newStaffs"
         }]
-    
+        
     }, {timestamps: true});
 
     const userModel = mongoose.model('Users', userSchema);

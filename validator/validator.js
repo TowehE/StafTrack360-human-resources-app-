@@ -138,12 +138,13 @@ const validateresetPassword = (data) => {
 const validateChangePassword = (data) => {
     try {
         const validateSchema = joi.object({
-            currentPassword: joi.string().min(8).max(20).trim().required().messages({
+            newPassword: joi.string().min(8).max(20).trim().required().messages({
+                'string.pattern.base': "Password must contain at least one uppercase letter, one lowercase letter, one digit, one special character, and be 8-20 characters long",
                 'string.empty': "Password field can't be left empty",
                 'string.min': "Password must be at least 8 characters long",
                 'any.required': "Please password field is required"
             }),
-            newPassword: joi.string().min(8).max(20).regex(/^[a-zA-Z0-9@#\$%\^&\*()_+\[\]{}\|;:\',\.\/<>?\`~!-]*$/).trim().required().messages({
+            confirmPassword: joi.string().min(8).max(20).regex(/^[a-zA-Z0-9@#\$%\^&\*()_+\[\]{}\|;:\',\.\/<>?\`~!-]*$/).trim().required().messages({
                  'string.pattern.base': "Password must contain at least one uppercase letter, one lowercase letter, one digit, one special character, and be 8-20 characters long",
                 'string.empty': "Password field can't be left empty",
                 'string.min': "Password must be at least 8 characters long",

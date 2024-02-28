@@ -158,6 +158,7 @@ exports.logInStaff = async (req, res) => {
       }
   
       const token = jwt.sign({
+        companyId: authenticatedStaffMember.companyId,
         userId: authenticatedStaffMember._id,
         email: authenticatedStaffMember.email,
         role: authenticatedStaffMember.role,
@@ -182,6 +183,7 @@ exports.logInStaff = async (req, res) => {
   
         return res.status(200).json({
           message: welcomeMessage,
+          data:staffMembers,
           token
         });
       } else {
@@ -260,32 +262,24 @@ exports.logInStaff = async (req, res) => {
 //     }
 // }
 
-// function to change password
 exports.changePassword = async (req, res) => {
     try {
         const { error } = validateChangePassword(req.body);
         if (error) {
-            return res.status(500).json({
+            return res.status(400).json({
                 message: error.details[0].message
-            }) 
-        } else {
-        const userId = req.params.userId;
-        const { currentPassword, newPassword } = req.body;
-
-        // Retrieve the user by userId
-        const user = await newStaffModel.findById(userId);
-        
-        if (!user) {
-            return res.status(404).json({
-                message: "User not found",
             });
         }
 
-        // Check if the current password matches the user's password
-        const isPasswordCorrect = bcrypt.compareSync(currentPassword, user.password);
-        if (!isPasswordCorrect) {
-            return res.status(401).json({
-                message: "Current password is incorrect",
+        const userId = req.params.userId;
+        const { newPassword, confirmPassword } = req.body;
+
+        // Retrieve the user by userId
+        const user = await newStaffModel.findById(userId);
+
+        if (!user) {
+            return res.status(404).json({
+                message: "User not found",
             });
         }
 
@@ -297,7 +291,13 @@ exports.changePassword = async (req, res) => {
             });
         }
 
-  
+        // Check if the new password matches the confirmation password
+        if (newPassword !== confirmPassword) {
+            return res.status(400).json({
+                message: "New password and confirm password do not match",
+            });
+        }
+
         // Generate hash for the new password
         const salt = bcrypt.genSaltSync(12);
         const hashPassword = bcrypt.hashSync(newPassword, salt);
@@ -309,13 +309,13 @@ exports.changePassword = async (req, res) => {
         return res.status(200).json({
             message: "Password changed successfully",
         });
-    }
     } catch (error) {
         return res.status(500).json({
             message: "Internal Server Error: " + error.message,
         });
     }
 };
+
 
 //Function for the user incase password is forgotten
 exports.forgotPassword = async (req, res) => {
