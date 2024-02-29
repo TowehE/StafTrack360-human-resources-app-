@@ -89,7 +89,7 @@ exports.signUp = async (req, res) => {
             const subject = 'Email Verification'
 
                     
-            const link = `${req.protocol}://${req.get('host')}/api/v1/verify/${business.id}/${business.token}`
+            const link = `${req.protocol}://${req.get('host')}/api/v1/verify/${business.id}`
                     const html = generateDynamicEmail(businessName, link)
                      sendEmail({
                         email: business.businessEmail,
