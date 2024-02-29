@@ -195,18 +195,19 @@ exports.logIn = async (req, res) => {
             const token = jwt.sign({
                 userId: checkbusinessEmail._id,
                 email: checkbusinessEmail.email,
-                role: checkbusinessEmail.role
+                role: checkbusinessEmail.role,
+                isPremium: checkbusinessEmail.isPremium,
 
             }, process.env.secret, { expiresIn: "15h" });
-                
+            checkbusinessEmail.token = token;
+            await checkbusinessEmail.save();
+
             if (checkbusinessEmail.isVerified === true) {
                 res.status(200).json({
                     message: "Welcome, " + checkbusinessEmail.businessName,
                     data: checkbusinessEmail,
-                    token: token
+                  
                 })
-                checkbusinessEmail.token = token;
-                await checkbusinessEmail.save();
             } else {
                 res.status(400).json({
                     message: "Sorry user not verified yet."

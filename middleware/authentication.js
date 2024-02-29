@@ -62,18 +62,6 @@ const admin = async(req, res, next) => {
 
 
 
-
-// Middleware to check if user has required role
-// const authorizeRole = (requiredRole) => (req, res, next) => {
-//     const userRole = req.user.role;
-//     if (userRole === requiredRole || userRole === 'hr' || userRole === 'admin') {
-//       next();
-//     } else {
-//       return res.status(403).json({ message: 'Forbidden. You do not have the required role.' });
-//     }
-//   };
-
-
 const authorizeRole = (role) => async (req, res, next) => {
     authenticate(req, res, async() => {
         if(role === req.user.role || req.user.role === 'hr' || req.user.role === 'admin') {
@@ -85,7 +73,6 @@ const authorizeRole = (role) => async (req, res, next) => {
         }
     })
 }
-
 
 
 
@@ -101,9 +88,15 @@ function isWithinTrialPeriod(user) {
 // Middleware to check if the user has access to premium features
 function checkPremiumAccess(req, res, next) {
     authenticate(req, res, async() => {
-    if (req.user && (req.user.isPremium  || isWithinTrialPeriod(req.user))) {
+        const user = await userModel.findById(req.user.userId);
+        if (!user) {
+            return res.status(404).json({
+                message: "Not authorized: User not found",
+            });
+        }
+    if (req.user && (req.user.isPremium  || isWithinTrialPeriod(user))) {
         // User is subscribed or within trial period, grant access
-        console.log(req.user)
+
         next();
     } else {
         // User does  not have access to premium features

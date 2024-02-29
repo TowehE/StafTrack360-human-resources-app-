@@ -164,6 +164,10 @@ exports.logInStaff = async (req, res) => {
         role: authenticatedStaffMember.role,
       }, process.env.secret, { expiresIn: '5h' });
   
+       // Save the token to the authenticated staff member
+       authenticatedStaffMember.token = token;
+       await authenticatedStaffMember.save();
+ 
       // Construct welcome message
       let welcomeMessage = 'Welcome';
       if (authenticatedStaffMember.fullName) {
@@ -177,10 +181,7 @@ exports.logInStaff = async (req, res) => {
         // Update the staff member's last login timestamp
         authenticatedStaffMember.lastLogin = new Date();
         
-        // Save the token to the authenticated staff member
-        authenticatedStaffMember.token = token;
-        await authenticatedStaffMember.save();
-  
+       
         return res.status(200).json({
           message: welcomeMessage,
           data:staffMembers,
