@@ -24,7 +24,7 @@ const validateUser = (data) => {
                 'string.empty': "Business name field can't be left empty",
                 'string.min': "Minimum of 3 characters for the business name field",
                 'any.required': "Please provide a business name ",
-                "string.pattern.base": "Username must contain characters"
+                "string.pattern.base": "Business name must contain characters"
             }),
             phoneNumber: joi.string().min(11).max(11).trim().regex(/^0\d{10}$/).required().messages({
                 'string.empty': "Phone number field can't be left empty",
