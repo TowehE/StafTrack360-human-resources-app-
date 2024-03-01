@@ -7,7 +7,7 @@ const {
      verify,
       logIn, 
       forgotPassword, 
-      resetPasswordPage, 
+      
       resetPassword,
        signOut,
         isAdmin,
@@ -33,8 +33,6 @@ router.post('/forgotPass', forgotPassword);
 //endpoint for admin to log in
 router.put("/isadmin/:adminId",authenticate, isAdmin)
 
-//endpoint for reset Password Page
-router.get('/reset/:userId', resetPasswordPage);
 
 //endpoint to reset user Password
 router.post('/resetUser/:userId', resetPassword);

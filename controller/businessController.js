@@ -48,7 +48,7 @@ exports.signUp = async (req, res) => {
             }
 
             //check if business name already exists
-            const businessNameExists = await userModel.findOne({ businessName: businessName});
+            const businessNameExists = await userModel.findOne({ businessName: capitalizeFirstLetter(businessName)});
             if (businessNameExists) {
                 return res.status(200).json({
                     message: 'Business name already exists',
@@ -275,19 +275,19 @@ exports.forgotPassword = async (req, res) => {
 }
 
 //Funtion to send the reset Password page to the server
-exports.resetPasswordPage = async (req, res) => {
-    try {
-        const userId = req.params.userId;
-        const resetPage = resetHTML(userId);
+// exports.resetPasswordPage = async (req, res) => {
+//     try {
+//         const userId = req.params.userId;
+//         const resetPage = resetHTML(userId);
 
-        // Send the HTML page as a response to the user
-        res.send(resetPage);
-    } catch (error) {
-        return res.status(500).json({
-            message: "Internal Server Error: " + error.message,
-        });
-    }
-}
+//         // Send the HTML page as a response to the user
+//         res.send(resetPage);
+//     } catch (error) {
+//         return res.status(500).json({
+//             message: "Internal Server Error: " + error.message,
+//         });
+//     }
+// }
 
 
 //Function to reset the user password
