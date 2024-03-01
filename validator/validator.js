@@ -12,13 +12,13 @@ const validateUser = (data) => {
                 'string.empty': "First name field can't be left empty",
                 'string.min': "Minimum of 3 characters for the first name field",
                 'any.required': "Please provide your first name",
-                "string.pattern.base": "Username must contain characters"
+                "string.pattern.base": "First name must contain characters"
             }),
             lastName: joi.string().min(3).max(30).trim().regex(/^[a-zA-Z\s'-]+$/).required().messages({
                 'string.empty': "Last name field can't be left empty",
                 'string.min': "Minimum of 3 characters for the last name field",
                 'any.required': "Please provide your last name",
-                "string.pattern.base": "Username must contain characters"
+                "string.pattern.base": "Last name must contain characters"
             }),
             businessName: joi.string().min(3).max(30).trim().regex(/^[a-zA-Z0-9\s&'-]+$/).required().messages({
                 'string.empty': "Business name field can't be left empty",
