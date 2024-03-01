@@ -31,7 +31,7 @@ exports.signUp = async (req, res) => {
 
 
                   // List of popular domain names
-                  const popularDomains = [ "yahoo.com", "outlook.com","hotmail.com", "aol.com","icloud.com","mail.com","protonmail.com","zoho.com","yandex.com" ]; 
+                  const popularDomains = [ "gmail.com","yahoo.com", "outlook.com","hotmail.com", "aol.com","icloud.com","mail.com","protonmail.com","zoho.com","yandex.com" ]; 
                   // Check if the email belongs to a popular domain
                   const domain = businessEmail.split("@")[1];
                   if (popularDomains.includes(domain.toLowerCase())) {
