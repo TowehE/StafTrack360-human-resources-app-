@@ -41,10 +41,7 @@
             type: Boolean,
             default: false,
         },
-        // newCode: {
-        //     type: String,
-        //     required: true,
-        // },
+    
         token: {
             type: String,
         },

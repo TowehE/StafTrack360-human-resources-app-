@@ -37,7 +37,7 @@ const generateDynamicEmail = (businessName, link) => {
           transition: background-color 0.3s;
         }
         .verify-button:hover {
-          background-color: #0056b3;
+          background-color: #00756a
         }
       </style>
     </head>
