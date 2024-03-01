@@ -50,7 +50,7 @@ exports.signUp = async (req, res) => {
             //check if business name already exists
             const nameExists = await userModel.findOne({ businessName: businessName});
             if (nameExists) {
-                return res.status(403).json({
+                return res.status(200).json({
                     message: 'Business name already exists',
                 })
             }
@@ -135,9 +135,9 @@ exports.verify = async (req, res) => {
   
       if (updatedUser.isVerified === true) {
         return res.status(200).send("<h1>You have been successfully verified. Kindly visit the login page.</h1>");
-      }setTimeout(() => {
+      }
         res.redirect(`https://staff-track360.vercel.app/#/loginasBusiness`);
-    }, 3000); 
+   
      
       
 
