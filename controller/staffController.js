@@ -515,8 +515,6 @@ exports.uploadImage = async (req, res) => {
                 message: "staff not found in our database"
             });
         }
-    
-      
 
         const data = {
             department: capitalizeFirstLetter(req.body.department) || staff.department,
