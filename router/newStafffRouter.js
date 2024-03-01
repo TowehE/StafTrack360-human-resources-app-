@@ -45,9 +45,6 @@ router.post('/resetStaff/:userId', resetPassword);
 //endpoint to sign out a user
 router.post("/logOut/:userId", logOut)
 
-// // Route that requires a team lead role and access to the same department
-// router.get('/team-lead-route/:department', authorizeRole('team-lead', true), getTeamLeadRoute)
-
 //endpoint o search for a staff
 router.get("/search", searchStaff)
 

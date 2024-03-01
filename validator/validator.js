@@ -31,7 +31,7 @@ const validateUser = (data) => {
                 'string.pattern.invalid': "Invalid phone number format. Please provide a valid Nigerian phone number."
             }),
           
-            password: joi.string().min(8).max(20).regex(/^[a-zA-Z0-9@#\$%\^&\*()_+\[\]{}\|;:\',\.\/<>?\`~!-]*$/).trim().required().messages({
+            password: joi.string().min(8).max(20).regex(/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[a-zA-Z\d@#\$%\^&\*()_+\[\]{}\|;:\',\.\/<>?\`~!-]{8,}$/).trim().required().messages({
                 'string.empty': "Password field can't be left empty",
                 'string.pattern.base': 'Password must contain Lowercase, Uppercase, Numbers, and special characters',
                 'string.min': "Password must be at least 8 characters long",

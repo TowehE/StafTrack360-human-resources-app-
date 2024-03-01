@@ -120,6 +120,12 @@ exports.verify = async (req, res) => {
       const id = req.params.id;
     //  const token = req.params.token;
       const user = await userModel.findById(id);
+      if(!user){
+        return res.status(404).json({
+            message: "user not found",
+        })
+    }
+
   
       // Verify the token
       jwt.verify(user.token, process.env.secret);
