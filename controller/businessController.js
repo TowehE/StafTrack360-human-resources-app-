@@ -129,7 +129,13 @@ exports.verify = async (req, res) => {
   
       if (updatedUser.isVerified === true) {
         return res.status(200).send("<h1>You have been successfully verified. Kindly visit the login page.</h1>");
-      }res.redirect(`https://${req.get('host')}/api/v1/login`);
+      }setTimeout(() => {
+        res.redirect(`https://staff-track360.vercel.app/#/loginasBusiness`);
+    }, 3000); 
+     
+      
+
+    //   res.redirect(`https://${req.get('host')}/api/v1/login`);
 
     } catch (error) {
       if (error instanceof jwt.JsonWebTokenError) {
