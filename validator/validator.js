@@ -41,7 +41,7 @@ const validateUser = (data) => {
                 }),
         });
 
-        
+
     return validateSchema.validate(data);
 } catch (error) {
     return res.status(500).json({
@@ -97,15 +97,15 @@ const validateStaffLogin = (data) => {
 }
 
 
-// List of popular domain names
-const businessEmailPattern = /^(?:gmail|yahoo|outlook|hotmail|aol|icloud|mail|protonmail|zoho|yandex)\.com$/;
+// // List of popular domain names
+// const businessEmailPattern = /^(?:gmail|yahoo|outlook|hotmail|aol|icloud|mail|protonmail|zoho|yandex)\.com$/;
 
 const validateForgotPassword = (data) => {
     try {
         const validateSchema = joi.object({
-            businessEmail: joi.string().email({ tlds: { allow: false } }).pattern(businessEmailPattern).required().messages({
+            businessEmail: joi.string().email({ tlds: { allow: false } }).required().messages({
                 'string.email': 'Please provide a valid business email address',
-                'string.pattern.base': 'Please provide your business email address',
+
                 'any.required': 'Email is required'
             }),
         })

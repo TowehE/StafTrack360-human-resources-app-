@@ -48,8 +48,8 @@ exports.signUp = async (req, res) => {
             }
 
             //check if business name already exists
-            const nameExists = await userModel.findOne({ businessName: businessName});
-            if (nameExists) {
+            const businessNameExists = await userModel.findOne({ businessName: businessName});
+            if (businessNameExists) {
                 return res.status(200).json({
                     message: 'Business name already exists',
                 })
@@ -134,14 +134,12 @@ exports.verify = async (req, res) => {
       const updatedUser = await userModel.findByIdAndUpdate(id, { isVerified: true }, { new: true });
   
       if (updatedUser.isVerified === true) {
-         res.status(200).send(    "<h3>You have been successfully verified. Kindly visit the login page.</h3><script>setTimeout(() => { window.location.href = 'https://staff-track360.vercel.app/#/loginasBusiness'; }, 2000);</script>");
+         res.status(200).send("<h3>You have been successfully verified. Kindly visit the login page.</h3><script>setTimeout(() => { window.location.href = 'https://staff-track360.vercel.app/#/loginasBusiness'; }, 2000);</script>");
         
      }; 
     
      
-      
 
-    //   res.redirect(`https://${req.get('host')}/api/v1/login`);
 
     } catch (error) {
       if (error instanceof jwt.JsonWebTokenError) {
