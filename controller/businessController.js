@@ -332,7 +332,7 @@ exports.signOut = async (req, res) => {
        
         if(!user){
             return res.status(404).json({
-                message: 'Staff not found'
+                message: 'Business not found'
             })
         }
 
