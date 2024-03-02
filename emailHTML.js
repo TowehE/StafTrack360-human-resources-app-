@@ -43,7 +43,7 @@ const generateDynamicEmail = (businessName, link) => {
     </head>
     <body>
       <div class="container">
-        <h1>STAFTRACK360</h1>
+        <h1>STAFFTRACK360</h1>
         <h2>Please verify your email</h2>
         <p>Welcome to StaffTrack360, ${businessName}!</p>
         <a href="${link}" class="verify-button">Verify Your Email</a>

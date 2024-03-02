@@ -51,7 +51,7 @@ exports.signUp = async (req, res) => {
             const businessNameExists = await userModel.findOne({ businessName: capitalizeFirstLetter(businessName)});
             if (businessNameExists) {
                 return res.status(200).json({
-                    message: 'Business name already exists',
+                    message: 'company name already exists',
                 })
             }
 
@@ -100,7 +100,7 @@ exports.signUp = async (req, res) => {
                     await business.save()
                 
                     return res.status(200).json({
-                        message: 'Business Account created successfully',
+                        message: 'Company Account created successfully',
                         data: business,
                           
                     })
@@ -201,7 +201,7 @@ exports.logIn = async (req, res) => {
             const checkbusinessEmail = await userModel.findOne({ businessEmail: businessEmail.toLowerCase() });
             if (!checkbusinessEmail) {
                 return res.status(404).json({
-                    message: 'Business not registered'
+                    message: 'Company not registered'
                 });
             }
             const checkPassword = bcrypt.compareSync(password, checkbusinessEmail.password);
@@ -340,7 +340,7 @@ exports.signOut = async (req, res) => {
        
         if(!user){
             return res.status(404).json({
-                message: 'Business not found'
+                message: 'Company not found'
             })
         }
 
@@ -401,11 +401,11 @@ exports.getAllBusiness = async(req,res)=>{
         const business = await userModel.find()     
         if(business.length == 0){
             return res.status(404).json({
-                message:"No business members"
+                message:"No company members"
             })
         } 
         res.status(200).json({
-            message:`There are ${business.length} business  in this database`,
+            message:`There are ${business.length} company  in this database`,
             data:business
         })                                 
         
@@ -426,11 +426,11 @@ exports.aCompany = async(req,res)=>{
         const business = await userModel.findById(id)
         if(!business){
             return res.status(404).json({
-                message:"No business account found in this data"
+                message:"No company account found in this data"
             })
         }
         res.status(200).json({
-            message:"business account found in this data",
+            message:"company account found in this data",
             data: business
         })
         

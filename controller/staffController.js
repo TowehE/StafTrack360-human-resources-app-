@@ -46,7 +46,7 @@ exports.addStaff = async (req, res) => {
 
     const business = await userModel.findById(companyId);
     if (!business) {
-        return res.status(404).json({ message: 'Business not found' });
+        return res.status(404).json({ message: 'company not found' });
     }
         // Generate a random password
         const generatePassword = () => {
