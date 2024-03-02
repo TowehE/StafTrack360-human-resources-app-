@@ -4,6 +4,8 @@ const newStaffSchema = new mongoose.Schema({
     fullName: {
         type: String,
         trim: true,
+        lowercase: true
+
        
     },
      email: {
@@ -18,7 +20,7 @@ const newStaffSchema = new mongoose.Schema({
     department:{
         type: String,
         trim: true,
-       
+   
 
     },
     
@@ -27,7 +29,7 @@ const newStaffSchema = new mongoose.Schema({
         // enum:["admin", "hod", "cto", "manager", "team-lead", "hr", "employee"],
         default: "employee",
         trim: true,
-       
+    
        
     },
     password:{

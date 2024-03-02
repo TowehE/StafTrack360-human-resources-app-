@@ -1,7 +1,7 @@
 const joi = require('@hapi/joi');
 
 const validateUser = (data) => {
-    try {
+    try { 
         const validateSchema = joi.object({
             businessEmail: joi.string().max(40).trim().email({ tlds: { allow: false } }).required().messages({
                 'string.empty': "Email field can't be left empty",
@@ -179,10 +179,7 @@ const validateUpdateStaff = (data) => {
                 "string.max": "Full name cannot exceed 40 characters",
                 "string.pattern.base": "Full name must contain both first name and last name separated by a space",
             }),
-            email: joi.string().max(40).trim().email({ tlds: { allow: false } }).messages({
-                'string.empty': "Email field can't be left empty",
-
-            }),
+           
             phoneNumber: joi.string().min(11).max(11).trim().regex(/^0\d{10}$/).messages({
                 'string.empty': "Phone number field can't be left empty",
                 'string.min': "Phone number must be atleast 11 digit long e.g: 08123456789",
@@ -216,6 +213,10 @@ const validateUpdateStaffAdmin = (data) => {
             role: joi.string().min(3).max(30).valid("admin", "hod", "cto", "manager", "team-lead", "hr", "employee").trim().messages({
                 'string.empty': "Role field can't be left empty",
                 'string.max': "Role cannot exceed 30 characters",
+
+            }),
+            email: joi.string().max(40).trim().email({ tlds: { allow: false } }).messages({
+                'string.empty': "Email field can't be left empty",
 
             }),
 

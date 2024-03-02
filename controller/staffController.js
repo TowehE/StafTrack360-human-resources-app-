@@ -30,6 +30,11 @@ const capitalizeEachWord = (str) => {
     return str.split(' ').map(word => word.charAt(0).toUpperCase() + word.slice(1).toLowerCase()).join(' ');
 };
 
+// Function to validate an email address
+const isValidEmail = (email) => {
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    return emailRegex.test(email);
+};
 
 
 //function to send staff email
@@ -37,6 +42,13 @@ exports.addStaff = async (req, res) => {
     try {
         const companyId = req.params.companyId;
         const { fullName, email, phoneNumber, department, role } = req.body;
+
+
+          // Validate email address
+          if (!isValidEmail(email)) {
+            return res.status(400).json({ message: 'Invalid email address. Please provide a valid email.' });
+        }
+
   // Check if the email already exists in the database
     const existingStaff = await newStaffModel.findOne({ email:email.toLowerCase(), companyId});
   if (existingStaff) {
@@ -66,13 +78,18 @@ exports.addStaff = async (req, res) => {
         const salt = bcrypt.genSaltSync(12)
         const hashedPassword = bcrypt.hashSync(password, salt);
 
+           // Capitalize the first letter of fullName, department, and role
+        const capitalizedFullName = capitalizeFirstLetter(fullName);
+        const capitalizedDepartment = capitalizeFirstLetter(department);
+        const capitalizedRole = capitalizeFirstLetter(role);
+
         // Create a new staff member
         const newStaff = new newStaffModel({ 
-            fullName:fullName, 
+            fullName: capitalizedFullName, 
             email:email.toLowerCase(), 
             phoneNumber:phoneNumber,
-            department:department.toLowerCase(), 
-            role:role,
+             department: capitalizedDepartment,
+             role: capitalizedRole,
             password: hashedPassword,
             companyId: companyId
         });
@@ -519,6 +536,8 @@ exports.uploadImage = async (req, res) => {
         const data = {
             department: capitalizeFirstLetter(req.body.department) || staff.department,
             role: capitalizeFirstLetter(req.body.role)|| staff.role,
+            email: capitalizeFirstLetter(req.body.email)|| staff.email,
+
         };
        
 
@@ -571,7 +590,6 @@ exports.uploadImage = async (req, res) => {
 
         const data = {
             fullName: capitalizeEachWord(req.body.fullName) || staff.fullName,
-            email: req.body.email || staff.email,
             phoneNumber: req.body.phoneNumber || staff.phoneNumber, 
         
         };
