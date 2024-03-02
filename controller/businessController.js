@@ -74,7 +74,7 @@ exports.signUp = async (req, res) => {
             // check if buiness exists
             if (!business) {
                 return res.status(404).json({
-                    message: 'business not found',
+                    message: 'company not found',
                 })
             }
 
