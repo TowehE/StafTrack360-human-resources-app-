@@ -176,7 +176,7 @@ exports.logInStaff = async (req, res) => {
   
       const token = jwt.sign({
         companyId: authenticatedStaffMember.companyId,
-        userId: authenticatedStaffMember._id,
+        // userId: authenticatedStaffMember._id,
         email: authenticatedStaffMember.email,
         role: authenticatedStaffMember.role,
       }, process.env.secret, { expiresIn: '5h' });
