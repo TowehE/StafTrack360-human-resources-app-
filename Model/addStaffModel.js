@@ -18,7 +18,8 @@ const newStaffSchema = new mongoose.Schema({
     department:{
         type: String,
         trim: true,
-     
+       
+
     },
     
     role:{
@@ -26,6 +27,7 @@ const newStaffSchema = new mongoose.Schema({
         // enum:["admin", "hod", "cto", "manager", "team-lead", "hr", "employee"],
         default: "employee",
         trim: true,
+       
        
     },
     password:{
