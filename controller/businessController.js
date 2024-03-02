@@ -134,10 +134,18 @@ exports.verify = async (req, res) => {
       const updatedUser = await userModel.findByIdAndUpdate(id, { isVerified: true }, { new: true });
   
       if (updatedUser.isVerified === true) {
-         res.status(200).send("<h3>You have been successfully verified. Kindly visit the login page.</h3><script>setTimeout(() => { window.location.href = 'https://staff-track360.vercel.app/#/loginasBusiness'; }, 2000);</script>");
-        
-     }; 
-    
+        res.status(200).send(`
+        <div style="text-align: center; padding: 50px; background-color: #f0f8f0;">
+            <h3 style="color: #008000;">You have been successfully verified.</h3>
+            <p style="color: #008000;">Kindly visit the login page.</p>
+            <p style="color: #008000;">You will be redirected in 5 seconds.</p>
+            <script>
+                setTimeout(() => { window.location.href = 'https://staff-track360.vercel.app/#/loginasBusiness'; }, 5000);
+            </script>
+        </div>
+    `);
+};
+      
      
 
 

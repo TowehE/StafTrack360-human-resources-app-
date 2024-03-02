@@ -136,7 +136,7 @@ exports.logInStaff = async (req, res) => {
   
       if (!staffMembers || staffMembers.length === 0) {
         return res.status(404).json({
-          message: 'User not registered'
+          message: 'Staff not registered'
         });
       }
   
