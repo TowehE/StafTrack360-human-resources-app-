@@ -40,7 +40,6 @@ router.post('/resetUser/:userId', resetPassword);
 //endpoint to sign out a user
 router.post("/signout/:userId", signOut)
 
-
 //endpoint to get all business 
 router.get('/allBusiness', getAllBusiness);
 

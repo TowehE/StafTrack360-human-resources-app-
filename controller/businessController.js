@@ -255,7 +255,7 @@ exports.forgotPassword = async (req, res) => {
             }) 
         } else {
             
-        const checkBusiness = await userModel.findOne({ businessEmail: req.body.businessEmail });
+        const checkBusiness = await userModel.findOne({ businessEmail: req.body.businessEmail.toLowerCase()});
         if (!checkBusiness) {
             return res.status(404).json({
                 message: 'Email does not exist'
