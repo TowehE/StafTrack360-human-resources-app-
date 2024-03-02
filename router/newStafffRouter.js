@@ -23,7 +23,7 @@ const { addStaff,
 const { authenticate, authorizeRole, checkPremiumAccess } = require('../middleware/authentication');
 
 // //endpoint to send a staff a mail to join
-router.post('/addStaff/:companyId', authenticate, authorizeRole('admin'),checkPremiumAccess, addStaff)
+router.post('/addStaff/:companyId',checkPremiumAccess, addStaff)
 
 
 //endpoint to log in staff
