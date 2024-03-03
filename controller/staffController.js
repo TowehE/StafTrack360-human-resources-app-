@@ -108,7 +108,7 @@ exports.addStaff = async (req, res) => {
 
         // Send welcome email
         const subject = 'Welcome to our team!';
-        const link = `${req.protocol}://${req.get('host')}/api/v1/login`;
+        const link = `https://staff-track360.vercel.app/#/changepassword`;
         const html = welcomeEmail(fullName, email, password, link, businessName);
         await sendEmail({
             email: newStaff.email,
