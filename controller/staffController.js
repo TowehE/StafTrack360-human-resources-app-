@@ -58,7 +58,8 @@ exports.addStaff = async (req, res) => {
 
     const business = await userModel.findById(companyId);
     if (!business) {
-        return res.status(404).json({ message: 'Company not found' });
+        return res.status(404).json({ 
+            message: 'Company not found' });
     }
         // Generate a random password
         const generatePassword = () => {
@@ -626,7 +627,7 @@ exports.getAllStaffs = async(req,res)=>{
     try {    
         const companyId = req.params.companyId
     
-        const staff = await newStaffModel.find({companyId}).populate('performance');  
+        const staff = await newStaffModel.find({companyId}).populate('performance').sort({ createdAt: -1 })
         if(!staff || staff.length <= 0){
             return res.status(404).json({
                 message:"No staff members"

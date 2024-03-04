@@ -357,41 +357,41 @@ exports.signOut = async (req, res) => {
     }
 }
 
-//function for admin
-exports.isAdmin = async(req,res)=>{
-    try{
-        //track the user id
-    const adminId = req.params.adminId;
+// //function for admin
+// exports.isAdmin = async(req,res)=>{
+//     try{
+//         //track the user id
+//     const adminId = req.params.adminId;
     
-    // track admin with the id gotten
-    const admin = await userModel.findById(adminId);
+//     // track admin with the id gotten
+//     const admin = await userModel.findById(adminId);
     
-    // check for error
-    if (!admin) {
-      res.status(404).json({
-        message: `Oops, you're not allowed to be an admin`,
-      });
-      return;
-    }
+//     // check for error
+//     if (!admin) {
+//       res.status(404).json({
+//         message: `Oops, you're not allowed to be an admin`,
+//       });
+//       return;
+//     }
 
-  const updatedAdmin = await userModel.findByIdAndUpdate(
-    adminId, 
-   { isAdmin:true},
-    {new:true}
-  )
+//   const updatedAdmin = await userModel.findByIdAndUpdate(
+//     adminId, 
+//    { isAdmin:true},
+//     {new:true}
+//   )
    
-        res.status(200).json({
-            message: `${admin.businessName} has been made an Admin`
-        })
+//         res.status(200).json({
+//             message: `${admin.businessName} has been made an Admin`
+//         })
     
     
     
-    } catch (error) {
-        return res.status(500).json({
-            message: "Internal Server Error: " + error.message,
-        });
-    }
-}
+//     } catch (error) {
+//         return res.status(500).json({
+//             message: "Internal Server Error: " + error.message,
+//         });
+//     }
+// }
 
 
 

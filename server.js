@@ -15,6 +15,7 @@ const bodyParser = require('body-parser');
 const userRouter  = require("./router/userRouter");
 const perfRouter  = require("./router/performanceRouter");
 const newStaff = require("./router/newStafffRouter")
+const department = require("./router/departmentRouter")
 
 // create an app from express module
 const app = express();
@@ -43,6 +44,8 @@ app.use("/api/v1", userRouter)
 app.use("/api/v1", perfRouter)
 
 app.use("/api/v1", newStaff)
+
+app.use("/api/v1", department)
 
 
 //listen to  the port

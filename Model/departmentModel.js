@@ -1,15 +1,20 @@
 const mongoose = require('mongoose');
 
 const newDepartmentSchema = new mongoose.Schema({
-    Department:{
-        type: 'string',
+    department:{
+        type: String,
         trim: true,
 
     },
+
     departmentHead:{
-        type: 'string',
+        type: String,
         trim: true,
-    }
+    },
+    
+    companyId: {
+        type: String,
+    },
 
 
 }, {timestamps: true});

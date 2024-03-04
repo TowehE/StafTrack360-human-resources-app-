@@ -32,6 +32,7 @@
         },  
         role:{
             type: String,
+             enum:["admin", "hod", "employee"],
             default: "admin",
             trim: true,
            
