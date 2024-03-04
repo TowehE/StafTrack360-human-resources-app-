@@ -50,7 +50,7 @@ const authenticate = async (req, res, next) => {
 
 const authorizeRole = (role) => async (req, res, next) => {
     authenticate(req, res, async() => {
-        if(role === req.user.role || req.user.role === 'hr' || req.user.role === 'admin') {
+        if(role === req.user.role || req.user.role === 'hod' || req.user.role === 'admin') {
             next()
         } else {
             return res.status(401).json({
