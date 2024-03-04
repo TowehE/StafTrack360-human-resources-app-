@@ -23,7 +23,7 @@ const { addStaff,
 const { authenticate, authorizeRole, checkPremiumAccess } = require('../middleware/authentication');
 
 // //endpoint to send a staff a mail to join
-router.post('/addStaff/:companyId', addStaff)
+router.post('/addStaff/:companyId', authenticate, authorizeRole("admin"),checkPremiumAccess, addStaff)
 
 
 //endpoint to log in staff
@@ -43,31 +43,31 @@ router.get('/resetPass/:userId', resetPasswordPage);
 router.post('/resetStaff/:userId', resetPassword);
 
 //endpoint to sign out a user
-router.post("/logOut/:userId", logOut)
+router.post("/logOut/:userId",authenticate, logOut)
 
 //endpoint o search for a staff
 router.get("/search", searchStaff)
 
 //endpoint to get all staff members
-router.get('/allStaffs/:companyId',getAllStaffs);
+router.get('/allStaffs/:companyId',authenticate,authorizeRole('admin','hod',),getAllStaffs);
 
 //endpoint to get a particular staff members
-router.get('/getOne/:id', aStaff);
+router.get('/getOne/:id', authenticate,aStaff);
 
 //endpoint to get all staff members
-router.get('/removeStaff/:id', removeStaff);
+router.get('/removeStaff/:id', authenticate, authorizeRole('admin','hod',),checkPremiumAccess,removeStaff);
 
 //endpoint to upload a picture
-router.put("/upload/:userId", uploadImage)
+router.put("/upload/:userId", authenticate,uploadImage)
 
 //endpint to update staff data
-router.put("/updateStaff/:userId", updateProfile)
+router.put("/updateStaff/:userId",authenticate, updateProfile)
       
 //endpint to update staff data  as an admin
-router.put("/updateStaffAdmin/:userId", updateProfileAdmin)
+router.put("/updateStaffAdmin/:userId", authenticate,authorizeRole("admin", "hod", ),updateProfileAdmin)
 
 // endpoint to vuew staff based on departmwent
-router.get('/department/:companyId/:department', getStaffByDepartmentAndCompany);
+router.get('/department/:companyId/:department',authenticate, authorizeRole('admin','hod'),getStaffByDepartmentAndCompany);
 
 
 

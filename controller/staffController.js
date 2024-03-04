@@ -612,7 +612,6 @@ exports.uploadImage = async (req, res) => {
             message: "Staff data updated successfully",
             data: updateStaff
         });
-
     }
     }catch (error) {
         return res.status(500).json({ 
@@ -697,6 +696,13 @@ exports.aStaff = async(req,res)=>{
 exports.removeStaff = async(req,res) =>{
     try {
         const id = req.params.id
+        const companyId = req.params.companyId;
+        const company = await userModel.findById(companyId);
+        if (!company) {
+            return res.status(404).json({
+                message: "Company not found",
+            })
+        }
         
         // find the staff
         const staffToDelete = await newStaffModel.findById(id)
@@ -708,7 +714,16 @@ exports.removeStaff = async(req,res) =>{
                 message:"staff not found in this database"
             })
         }
-        res.status(200).json({
+        const staffIndex = company.staff.indexOf(companyId)
+        if (staffIndex === -1){
+            return res.status(400).json({
+                message: "staff not found in the company database"
+            })
+        } else {
+             company.staff.slice(staffIndex, 1)
+            await company.save()
+        }
+        return res.status(200).json({
             message:"staff has been removed successfully"
         })
 
@@ -724,13 +739,14 @@ exports.removeStaff = async(req,res) =>{
 // to get staff by department
 exports.getStaffByDepartmentAndCompany = async (req, res) => {
     try {
-        const companyId = req.params.companyId; // Assuming companyId is passed as a parameter
-        const department = req.params.department; // Assuming department is passed as a parameter
+        const companyId = req.params.companyId; 
+        const department = req.params.department; 
 
         // Find the company based on the provided company ID
         const company = await userModel.findById(companyId);
         if (!company) {
-            return res.status(404).json({ message: 'Company not found' });
+            return res.status(404).json({ 
+                message: 'Company not found' });
         }
 
         // Query the database for staff members in the specified department for the company
@@ -738,7 +754,8 @@ exports.getStaffByDepartmentAndCompany = async (req, res) => {
 
         // Check if staff members were found
         if (staffInDepartment.length === 0) {
-            return res.status(404).json({ message: `No staff members found in the ${department} department for the specified company` });
+            return res.status(404).json({
+                 message: `No staff members found in the ${department} department for the specified company` });
         }
 
         return res.status(200).json({
@@ -752,5 +769,3 @@ exports.getStaffByDepartmentAndCompany = async (req, res) => {
     }
 }
 
-
-//function to assign a role

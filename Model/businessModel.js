@@ -32,7 +32,6 @@
         },  
         role:{
             type: String,
-            enum:["admin", "hod", "cto", "manager", "team-lead", "hr", "employee"],
             default: "admin",
             trim: true,
            
@@ -59,8 +58,11 @@
         staff:[{
             type: mongoose.Schema.Types.ObjectId,
             ref: "newStaffs"
+        }],
+        department:[{
+            type: mongoose.Schema.Types.ObjectId,
+            ref: "department"
         }]
-        
     }, {timestamps: true});
 
     const userModel = mongoose.model('Users', userSchema);

@@ -28,26 +28,23 @@ router.get('/verify/:id', verify);
 router.post('/login',logIn);
  
 //endpoint for forget Password
-router.post('/forgotPass', forgotPassword);
-
-//endpoint for admin to log in
-router.put("/isadmin/:adminId",authenticate, isAdmin)
+router.post('/forgotPass', forgotPassword); 
 
 
 //endpoint to reset user Password
 router.post('/resetUser/:userId', resetPassword);
 
 //endpoint to sign out a user
-router.post("/signout/:userId", signOut)
+router.post("/signout/:userId", authenticate,signOut)
 
 //endpoint to get all business 
-router.get('/allBusiness', getAllBusiness);
+router.get('/allBusiness',authenticate, getAllBusiness);
 
 //endpoint to get a business account
-router.get('/getOneBu/:id', aCompany);
+router.get('/getOneBu/:id',authenticate, aCompany);
 
 //endpoint to  delete business
-router.get('/removeCompany/:id', deleteCompany);
+router.get('/removeCompany/:id',authenticate, deleteCompany);
 
 
 

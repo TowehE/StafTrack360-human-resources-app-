@@ -32,7 +32,6 @@ const authenticate = async (req, res, next) => {
         }
 
         req.user = decodeToken;
-
         next();
 
     } catch (error) {
@@ -46,19 +45,6 @@ const authenticate = async (req, res, next) => {
         })        
     }
 };
-
-//authorization for admin
-const admin = async(req, res, next) => {
-    authenticate(req,res, async()=>{
-        if(req.user.isAdmin){
-            next()
-        }else{
-            return res.status(401).json({
-                message:"User not authorized"
-            })
-        }
-    })
-}
 
 
 
@@ -107,7 +93,6 @@ function checkPremiumAccess(req, res, next) {
 
 module.exports = {
     authenticate,
- 
     authorizeRole,
     checkPremiumAccess,
     
