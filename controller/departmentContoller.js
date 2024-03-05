@@ -1,5 +1,6 @@
 const newDepartmentModel = require("../Model/departmentModel");
 const userModel = require("../Model/businessModel")
+const newStaffModel = require("../Model/addStaffModel")
 
 
 
@@ -33,13 +34,18 @@ exports.createDepartment = async (req, res) => {
                   message: 'Head of Department must be an existing employee',
               });
           }
-          
+
         const departmentHeadExists = await newDepartmentModel.findOne({ departmentHead: capitalizeFirstLetter(departmentHead), companyId});
         if (departmentHeadExists) {
             return res.status(400).json({
                 message: 'Head of Department already exists',
             });
         }
+
+           // Update the employee role to "head of department"
+           existingEmployee.role = "hod";
+           await existingEmployee.save();
+   
         const departmentA = new newDepartmentModel({
             department: capitalizeFirstLetter(department).trim(),
             departmentHead: capitalizeFirstLetter(departmentHead).trim(),

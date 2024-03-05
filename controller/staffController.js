@@ -90,7 +90,7 @@ exports.addStaff = async (req, res) => {
             email:email.toLowerCase(), 
             phoneNumber:phoneNumber,
              department: capitalizedDepartment,
-             role: capitalizedRole,
+            //  role: capitalizedRole,
             password: hashedPassword,
             companyId: companyId
         });
@@ -120,8 +120,6 @@ exports.addStaff = async (req, res) => {
         
          newStaff.isVerified = true;
          
-        // // Save the new staff member
-        // await newStaff.save();
 
         // Save the new staff member
         await newStaff.save();
@@ -217,71 +215,9 @@ exports.logInStaff = async (req, res) => {
       });
     }
   };
-  
-// exports.logInStaff = async (req, res) => {
-//     try {
-//         const { error } = validateStaffLogin(req.body);
-//         if (error) {
-//             return res.status(500).json({
-//                 message: error.details[0].message
-//             }) 
-//         } else {
-//             const { email, password } = req.body;
-//             const staffMember = await newStaffModel.findOne({ email: email.toLowerCase() });
-          
-//             if (!staffMember) {
-//                 return res.status(404).json({
-//                     message: 'Staff not registered'
-//                 });
-//             }
-            
-
-//             const checkPassword = bcrypt.compareSync(password, staffMember.password);
-//             if (!checkPassword) {
-//                 return res.status(401).json({
-//                     message: "Password is incorrect"
-//                 })
-//             }
-//             const token = jwt.sign({
-//                 userId: staffMember._id,
-//                 email: staffMember.email,
-              
-//             }, process.env.secret, { expiresIn: "1h" });
-              
-//             // Construct welcome message
-//         let welcomeMessage = "Welcome";
-//         if (staffMember.fullName) {
-//             welcomeMessage += " " + staffMember.fullName;
-//         }
-       
-//         if (!staffMember.fullName) {
-//             welcomeMessage += " " + staffMember.email;
-//         }
 
 
-//             if (staffMember.isVerified === true) {
-//                 res.status(200).json({
-//                     message: welcomeMessage,
-//                     token
-//                 })
-               
-//                 staffMember.token = token;
-//                 await staffMember.save();
-//             } else {
-//                 res.status(400).json({
-//                     message: "Sorry user not verified yet."
-//                 })
-//             }
-           
-//         }
-
-//     } catch (error) {
-//         return res.status(500).json({
-//             message: "Internal Server Error: " + error.message,
-//         });
-//     }
-// }
-
+//fumction to change password
 exports.changePassword = async (req, res) => {
     try {
         const { error } = validateChangePassword(req.body);
@@ -637,7 +573,9 @@ exports.uploadImage = async (req, res) => {
             });
         }
         
-        
+         // Capitalize the data before sending in the response
+         updateStaff.fullName = capitalizeEachWord(updateStaff.fullName);
+
          // Save the updated staff data
          await updateStaff.save();
 

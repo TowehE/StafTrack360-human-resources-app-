@@ -4,7 +4,7 @@ const newStaffSchema = new mongoose.Schema({
     fullName: {
         type: String,
         trim: true,
-        lowercase: true
+        // lowercase: true
 
        
     },
@@ -21,30 +21,32 @@ const newStaffSchema = new mongoose.Schema({
         type: String,
         trim: true,
    
-
     },
     
     role:{
         type: String,
-        // enum:["admin", "hod", "cto", "manager", "team-lead", "hr", "employee"],
+         enum:["admin", "hod",  "employee"],
         default: "employee",
         trim: true,
-    
        
     },
     password:{
         type: String,
     },
+
     companyId: {
         type: String,
     },
+
     isVerified: {
         type: Boolean,
         default: false,
     },
+
     token: {
         type: String,
     },
+
     profilePicture: [{
         public_id: {
             type: String,
