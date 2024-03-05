@@ -26,6 +26,14 @@ exports.createDepartment = async (req, res) => {
             });
         }
 
+          // Check if the department head is an existing employee
+          const existingEmployee = await newStaffModel.findOne({ fullName: capitalizeFirstLetter(departmentHead), companyId });
+          if (!existingEmployee) {
+              return res.status(400).json({
+                  message: 'Head of Department must be an existing employee',
+              });
+          }
+          
         const departmentHeadExists = await newDepartmentModel.findOne({ departmentHead: capitalizeFirstLetter(departmentHead), companyId});
         if (departmentHeadExists) {
             return res.status(400).json({
