@@ -160,29 +160,93 @@ exports.getAllDepartment = async (req, res) => {
     
   };
 
-
-//to remove a company from database
-exports.deleteDepartment = async(req,res) =>{
+  exports.deleteDepartment = async(req, res) => {
     try {
-        const departmentId = req.params.departmentId
-
-        const deleteDepartment = await userModel.findByIdAndDelete(departmentId)
-
-        if(!deleteDepartment){
+        const companyId = req.params.companyId;
+        const company = await userModel.findById(companyId);
+        if (!company) {
             return res.status(404).json({
-                message:"department not found in this database"
-            })
+                message: "Company not found",
+            });
         }
-        res.status(200).json({
-            message:"department has been removed successfully"
-        })
+        
+        const departmentId = req.params.departmentId;
+
+        const deleteDepartment = await newDepartmentModel.findByIdAndDelete(departmentId);
+
+        if (!deleteDepartment) {
+            return res.status(404).json({
+                message: "Department not found in this database",
+            });
+        }
+
+        const departmentIndex = company.staff.indexOf(departmentId);
+        if (departmentIndex === -1) {
+            return res.status(400).json({
+                message: "Department not found in the company database",
+            });
+        } else {
+            company.staff.splice(departmentIndex, 1); // Corrected to use splice() method to remove element from array
+            await company.save();
+        }
+
+        return res.status(200).json({
+            message: "Department has been removed successfully",
+        });
 
     } catch (error) {
         return res.status(500).json({
             message: "Internal Server Error: " + error.message,
         });
     }
-}
+};
+
+//delete a department
+exports.deleteDepartment = async(req, res) => {
+    try {
+        const departmentId = req.params.departmentId;
+        const companyId = req.params.companyId;
+        const company = await userModel.findById(companyId);
+        if (!company) {
+            return res.status(404).json({
+                message: "Company not found",
+            });
+        }
+        
+     
+         
+        // find the department
+        const departmentToDelete = await newDepartmentModel.findById(departmentId)
+
+        const deleteDepartment = await newDepartmentModel.findByIdAndDelete(departmentId);
+
+        if (!deleteDepartment) {
+            return res.status(404).json({
+                message: "Department not found in this database",
+            });
+        }
+
+        const departmentIndex = company.staff.indexOf(departmentId);
+        if (departmentIndex === -1) {
+            return res.status(400).json({
+                message: "Department not found in the company database",
+            });
+        } else {
+            company.staff.slice(departmentIndex, 1); 
+            await company.save();
+        }
+
+        return res.status(200).json({
+            message: "Department has been removed successfully",
+        });
+
+    } catch (error) {
+        return res.status(500).json({
+            message: "Internal Server Error: " + error.message,
+        });
+    }
+};
+
 
 
 

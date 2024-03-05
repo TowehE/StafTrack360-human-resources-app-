@@ -10,7 +10,7 @@ const {
       
       resetPassword,
        signOut,
-        isAdmin,
+        
     getAllBusiness,
     aCompany,
     deleteCompany} = require('../controller/businessController');

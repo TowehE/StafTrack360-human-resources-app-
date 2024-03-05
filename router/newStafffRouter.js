@@ -43,7 +43,7 @@ router.get('/resetPass/:userId', resetPasswordPage);
 router.post('/resetStaff/:userId', resetPassword);
 
 //endpoint to sign out a user
-router.post("/logOut/:userId",authenticate, logOut)
+router.post("/logOut/:userId", authenticate,logOut)
 
 //endpoint o search for a staff
 router.get("/search", searchStaff)

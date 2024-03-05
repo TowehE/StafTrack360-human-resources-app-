@@ -109,7 +109,7 @@ exports.addStaff = async (req, res) => {
 
         // Send welcome email
         const subject = 'Welcome to our team!';
-        const link = `https://staff-track360.vercel.app/#/changepassword`;
+        const link = `https://staff-track360.vercel.app/#/loginasEmployee`;
         const html = welcomeEmail(fullName, email, password, link, businessName);
         await sendEmail({
             email: newStaff.email,
@@ -120,8 +120,8 @@ exports.addStaff = async (req, res) => {
         
          newStaff.isVerified = true;
          
-        // Save the new staff member
-        await newStaff.save();
+        // // Save the new staff member
+        // await newStaff.save();
 
         // Save the new staff member
         await newStaff.save();
@@ -156,6 +156,7 @@ exports.logInStaff = async (req, res) => {
         return res.status(404).json({
           message: 'Staff not registered'
         });
+        
       }
   
       let authenticatedStaffMember;
@@ -177,7 +178,7 @@ exports.logInStaff = async (req, res) => {
   
       const token = jwt.sign({
         companyId: authenticatedStaffMember.companyId,
-        // userId: authenticatedStaffMember._id,
+         userId: authenticatedStaffMember._id,
         email: authenticatedStaffMember.email,
         role: authenticatedStaffMember.role,
       }, process.env.secret, { expiresIn: '5h' });
@@ -202,8 +203,8 @@ exports.logInStaff = async (req, res) => {
        
         return res.status(200).json({
           message: welcomeMessage,
-          data:staffMembers,
-          token
+          data:authenticatedStaffMember,
+          
         });
       } else {
         return res.status(400).json({
@@ -409,32 +410,63 @@ exports.resetPassword = async (req, res) => {
 }
 
 // Function to signOut a user
+
+// Function to signOut a user
+// exports.logOut = async (req, res) => {
+//     try {
+//         const staffId = req.params.staffId
+//         const staff = await newStaffModel.findById(staffId)
+//         console.log(staffId)
+// if(!staff){
+//     return res.status(404).json({
+//         message: 'Staff not found'
+//     })
+// }
+
+//         // Update the staff member's last login timestamp
+//         staff.lastLogout = new Date();
+// // invalidate the token by  setting it to null
+//         staff.token = null;
+//         await staff.save();
+
+//         return res.status(201).json({
+//             message: `staff has been signed out successfully`
+//         })
+//     } catch (error) {
+//         return res.status(500).json({
+//             message: "Internal Server Error: " + error.message,
+//         });
+//     }
+// }
 exports.logOut = async (req, res) => {
     try {
-        const userId = req.params.userId
-        const user = await newStaffModel.findById(userId)
-        console.log(userId)
-if(!user){
-    return res.status(404).json({
-        message: 'Staff not found'
-    })
-}
+        const userId = req.params.userId;
+      
+        const staff = await newStaffModel.findById(userId);
+       
+        if (!staff) {
+            return res.status(404).json({
+                message: 'Staff not found'
+            });
+        }
 
         // Update the staff member's last login timestamp
-        user.lastLogout = new Date();
-// invalidate the token by  setting it to null
-        user.token = null;
-        await user.save();
+        staff.lastLogout = new Date();
+        // invalidate the token by  setting it to null
+        staff.token = null;
+        await staff.save();
 
         return res.status(201).json({
-            message: `user has been signed out successfully`
-        })
+            message: `staff has been signed out successfully`
+        });
     } catch (error) {
+        console.error("Error:", error); // Log any errors that occur
         return res.status(500).json({
             message: "Internal Server Error: " + error.message,
         });
     }
-}
+};
+
 
 // Function to upload a Logo image
 const uploadImageToCloudinary = async (profilePicture, staff) => {

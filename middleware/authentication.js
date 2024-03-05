@@ -20,6 +20,7 @@ const authenticate = async (req, res, next) => {
             });
         }
         const decodeToken = jwt.verify(token, process.env.secret)
+        
         let user;
         user = await userModel.findById(decodeToken.userId);
         if (!user) {

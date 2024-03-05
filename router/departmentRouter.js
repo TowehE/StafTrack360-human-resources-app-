@@ -27,7 +27,7 @@ router.get('/alldepartment/:companyId', authenticate,authorizeRole("hod" , "admi
 router.put('/editDepartment/:departmentId', authenticate,authorizeRole("hod" , "admin"),updateDepartment);
 
 //endpoint for get delete a department
-router.delete('/deleteDepartment', authenticate,authorizeRole("hod" , "admin"),deleteDepartment);
+router.delete('/deleteDepartment/:companyId/:departmentId', authenticate,authorizeRole("hod" , "admin"),deleteDepartment);
 
 
 
