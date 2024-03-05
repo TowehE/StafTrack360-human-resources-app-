@@ -7,7 +7,9 @@ const { validateUser, validateUserLogin,validateForgotPassword, validateresetPas
 const { generateDynamicEmail } = require('../emailHTML');
 const { resetFunc } = require('../forgotPassword');
 const resetHTML = require('../resetHTML');
-const {welcomeEmail} = require('../welcome')
+const {welcomeEmail} = require('../welcome');
+const performanceRatingModel = require('../Model/performanceModel');
+const newDepartmentModel = require('../Model/departmentModel');
 require('dotenv').config();
 
 
@@ -457,6 +459,16 @@ exports.deleteCompany = async(req,res) =>{
                 message:"company not found in this database"
             })
         }
+
+        
+      
+        await newDepartmentModel.deleteMany({ companyId: companyId });
+
+  
+        await newStaffModel.deleteMany({ companyId: companyId });
+
+      
+        await performanceRatingModel.deleteMany({ companyId: companyId });
         res.status(200).json({
             message:"company has been removed successfully"
         })

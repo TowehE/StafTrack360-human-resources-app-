@@ -345,35 +345,6 @@ exports.resetPassword = async (req, res) => {
     }
 }
 
-// Function to signOut a user
-
-// Function to signOut a user
-// exports.logOut = async (req, res) => {
-//     try {
-//         const staffId = req.params.staffId
-//         const staff = await newStaffModel.findById(staffId)
-//         console.log(staffId)
-// if(!staff){
-//     return res.status(404).json({
-//         message: 'Staff not found'
-//     })
-// }
-
-//         // Update the staff member's last login timestamp
-//         staff.lastLogout = new Date();
-// // invalidate the token by  setting it to null
-//         staff.token = null;
-//         await staff.save();
-
-//         return res.status(201).json({
-//             message: `staff has been signed out successfully`
-//         })
-//     } catch (error) {
-//         return res.status(500).json({
-//             message: "Internal Server Error: " + error.message,
-//         });
-//     }
-// }
 exports.logOut = async (req, res) => {
     try {
         const userId = req.params.userId;
@@ -691,7 +662,7 @@ exports.removeStaff = async(req,res) =>{
                 message: "staff not found in the company database"
             })
         } else {
-             company.staff.slice(staffIndex, 1)
+             company.staff.splice(staffIndex, 1)
             await company.save()
         }
         return res.status(200).json({

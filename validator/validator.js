@@ -5,7 +5,7 @@ const validateUser = (data) => {
         const validateSchema = joi.object({
             businessEmail: joi.string().max(40).trim().email({ tlds: { allow: false } }).required().messages({
                 'string.empty': "Email field can't be left empty",
-                'any.required': "Please provide email address",
+                'any.required': "Please provide a business email address",
                
             }),
             firstName: joi.string().min(3).max(30).trim().regex(/^[a-zA-Z\s'-]+$/).required().messages({

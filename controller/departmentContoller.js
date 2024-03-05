@@ -172,7 +172,38 @@ exports.getAllDepartment = async (req, res) => {
          message: 'Internal Server Error: ' + error.message });
     }
     
+
   };
+
+
+  exports.getStaffInDepartment = async (req, res) => {
+    try {
+        
+        const departmentHeadId = req.params.departmentHeadId;
+        const companyId = req.params.companyId
+        
+        const department = await newDepartmentModel.findOne({ departmentHead: departmentHeadId, companyId });
+
+        if (!department ||department.length <= 0) {
+            return res.status(404).json({ 
+                message: "No department member not found" });
+        }
+
+        // Retrieve all staff members in the department
+        const staffInDepartment = await newStaffModel.find({ department: department.department, companyId });
+
+        return res.status(200).json({
+             message: "Staff in department retrieved successfully", 
+             data: staffInDepartment 
+            });
+
+    } catch (error) {
+        return res.status(500).json({
+             message: "Internal Server Error: " + error.message
+             });
+    }
+};
+
 
   exports.deleteDepartment = async(req, res) => {
     try {
