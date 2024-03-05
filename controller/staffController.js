@@ -82,7 +82,7 @@ exports.addStaff = async (req, res) => {
            // Capitalize the first letter of fullName, department, and role
         const capitalizedFullName = capitalizeFirstLetter(fullName);
         const capitalizedDepartment = capitalizeFirstLetter(department);
-        const capitalizedRole = capitalizeFirstLetter(role);
+        // const capitalizedRole = capitalizeFirstLetter(role);
 
         // Create a new staff member
         const newStaff = new newStaffModel({ 

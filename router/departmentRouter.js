@@ -7,7 +7,8 @@ const { createDepartment,
     getAllDepartment,
     updateDepartment,
     getStaffInDepartment,
-    deleteDepartment
+    deleteDepartment,
+    getStaffUnderDepartment
 
 } = require("../controller/departmentContoller");
 
@@ -20,7 +21,11 @@ router.post('/addDepar/:companyId', authenticate,authorizeRole("hod" , "admin"),
 router.get('/getdepartment/:companyId/:departmentId', authenticate,authorizeRole("hod" , "admin"),  getADepartment);
 
 //endpoint for get all department by head of department
-router.get('/hodbydepart/:departmentHeadId/:companyId', authenticate,authorizeRole("hod" , "admin"),getStaffInDepartment);
+router.get('/hodbydepa/:departmentHeadId/:companyId', authenticate,authorizeRole("hod" , "admin"),getStaffInDepartment);
+
+
+//endpoint for get all department by head of department
+router.get('/hodbydepart/:departmentHeadId', authenticate,authorizeRole("hod" , "admin"),getStaffUnderDepartment);
 
 
 //endpoint for get all department

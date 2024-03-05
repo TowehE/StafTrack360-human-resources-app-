@@ -182,7 +182,7 @@ exports.getAllDepartment = async (req, res) => {
         const departmentHeadId = req.params.departmentHeadId;
         const companyId = req.params.companyId
         
-        const department = await newDepartmentModel.findOne({ departmentHead: departmentHeadId, companyId });
+        const department = await newStaffModel.findOne({ departmentHeadId: departmentHeadId, companyId });
 
         if (!department ||department.length <= 0) {
             return res.status(404).json({ 
@@ -201,6 +201,33 @@ exports.getAllDepartment = async (req, res) => {
         return res.status(500).json({
              message: "Internal Server Error: " + error.message
              });
+    }
+};
+
+exports.getStaffUnderDepartment = async (req, res) => {
+    try {
+        const departmentHeadId = req.params.departmentHeadId;
+
+        // Find the department head
+        const departmentHead = await newDepartmentModel.findById(departmentHeadId);
+
+        if (!departmentHead) {
+            return res.status(404).json({
+                message: 'Department head not found'
+            });
+        }
+
+        // Find all staff members under the department head's department and company
+        const staffUnderDepartment = await newStaffModel.find({ companyId: departmentHead.companyId, department: departmentHead.department });
+
+        return res.status(200).json({
+            message: 'Staff under department retrieved successfully',
+            data: staffUnderDepartment
+        });
+    } catch (error) {
+        return res.status(500).json({
+            message: 'Internal Server Error: ' + error.message
+        });
     }
 };
 
