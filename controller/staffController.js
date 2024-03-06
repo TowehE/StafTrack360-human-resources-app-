@@ -3,7 +3,7 @@ const newStaffModel = require('../Model/addStaffModel')
 const newDepartmentModel = require("../Model/departmentModel")
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
- const {validateStaffLogin, validateChangePassword, validateUpdateStaff, validateUpdateStaffAdmin} = require('../validator/validator');
+ const {validateStaffLogin, validateChangePassword, validateUpdateStaff, validateUpdateStaffAdmin, validateAddStaff} = require('../validator/validator');
  const { sendEmail } = require('../email');
 const { resetFunc } = require('../forgotPassword');
 const resetHTML = require('../resetHTML');
@@ -41,6 +41,12 @@ const isValidEmail = (email) => {
 //function to send staff email
 exports.addStaff = async (req, res) => {
     try {
+        const { error } = validateAddStaff(req.body);
+        if (error) {
+            return res.status(500).json({
+                message: error.details[0].message
+            })
+        } else {
         const companyId = req.params.companyId;
         const { fullName, email, phoneNumber, department, role } = req.body;
 
@@ -81,7 +87,7 @@ exports.addStaff = async (req, res) => {
         const hashedPassword = bcrypt.hashSync(password, salt);
 
           //Check Department
-          const existingDepartment = await newDepartmentModel.findOne({ department: department, companyId });
+          const existingDepartment = await newDepartmentModel.findOne({ department: capitalizeFirstLetter(department), companyId });
         if (!existingDepartment) {
             return res.status(400).json({
                 message: 'Department does not exist for the company. Please provide a valid department.' });
@@ -105,11 +111,9 @@ exports.addStaff = async (req, res) => {
             fullName: capitalizedFullName, 
             email:email.toLowerCase(), 
             phoneNumber:phoneNumber,
-    
             department: capitalizedDepartment,
             departmentId: existingDepartment._id,
-            // departmentId: departmentExists._id,
-            //  role: capitalizedRole,
+           role: role,
             password: hashedPassword,
             companyId: companyId
         });
@@ -149,6 +153,7 @@ exports.addStaff = async (req, res) => {
              message: `You've successfully added a new staff member to the company!` ,
              data: newStaff
              });
+            }
             } catch (error) {
                 return res.status(500).json({
                     message: "Internal Server Error: " + error.message,

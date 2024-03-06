@@ -142,6 +142,47 @@ const validateresetPassword = (data) => {
 };
 
 
+
+const validateAddStaff = (data) => {
+    try {
+        const validateSchema = joi.object({
+            fullName: joi.string().min(3).max(40).trim().regex(/^[A-Za-z]+(?: [A-Za-z]+){1,2}$/).required().messages({
+                "string.empty": "Full name field can't be left empty",
+                "string.min": "Full name must be at least 3 characters long",
+                "string.max": "Full name cannot exceed 40 characters",
+                "string.pattern.base": "Full name must contain both first name and last name separated by a space",
+            }),
+            department: joi.string().min(3).max(30).trim().required().messages({
+                'string.empty': "Department field can't be left empty",
+                'string.min': "Department name must be at least 3 characters long",
+                'string.max': "Department name cannot exceed 30 characters",
+
+            }),
+           
+            phoneNumber: joi.string().min(11).max(11).trim().regex(/^0\d{10}$/).messages({
+                'string.empty': "Phone number field can't be left empty",
+                'string.min': "Phone number must be atleast 11 digit long e.g: 08123456789",
+                'string.max': "Phone number must be at least 11 digit long e.g: 08123456789",
+                'string.pattern.base': "Phone number must start with '0' followed by 10 digits (e.g., 08123456789)",
+                'string.pattern.invalid': "Invalid phone number format. Please provide a valid Nigerian phone number."
+            }),
+       
+            role: joi.string().min(3).max(30).valid("admin", "hod", "employee").trim().required().messages({
+                'string.empty': "Role field can't be left empty",
+                'string.max': "Role cannot exceed 30 characters",
+
+            }),
+            email: joi.string().max(40).trim().email({ tlds: { allow: false } }).required().messages({
+                'string.empty': "Email field can't be left empty",
+
+            }),
+
+        })
+        return validateSchema.validate(data);
+    } catch (error) {
+        throw new Error("Error while validating user: " + error.message)
+    }
+}
 const validateChangePassword = (data) => {
     try {
         const validateSchema = joi.object({
@@ -365,6 +406,7 @@ module.exports = {
     validateStaffLogin,
     validateChangePassword,
     validateUpdateStaff,
+    validateAddStaff,
     validateInputSchema,
     validateperformanceRating,
     validateForgotPassword,
