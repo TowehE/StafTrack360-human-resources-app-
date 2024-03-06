@@ -28,14 +28,13 @@ exports.AddperformanceRating = async (req, res) => {
                 message: "Staff not found",
             })
         }
-        console.log(staff)
           
         const checkPerformance = await performanceRatingModel.findOne({staffEmail: staff.email})
-        console.log(checkPerformance.createdAt.getMonth())
-        if(checkPerformance.createdAt.getMonth() === today.getMonth()) {
+   
+        if(checkPerformance && checkPerformance.createdAt && checkPerformance.createdAt.getMonth() === today.getMonth() ) {
             if (checkPerformance) {
                 return res.status(404).json({
-                    message: "performance already exists for this month",
+                    message: "This staff performance already exists for this month",
                 })
               }
         }
@@ -325,6 +324,8 @@ exports.getPerformanceByCreatedAt = async (req, res) => {
         });
     }
 }
+
+
 exports.getPerformanceByCompanyId = async (req, res) => {
     try {
         const companyId = req.params.companyId; // Assuming companyId is passed as a parameter
