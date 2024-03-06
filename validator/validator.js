@@ -167,7 +167,7 @@ const validateAddStaff = (data) => {
                 'string.pattern.invalid': "Invalid phone number format. Please provide a valid Nigerian phone number."
             }),
        
-            role: joi.string().min(3).max(30).valid("admin", "hod", "employee").trim().required().messages({
+            role: joi.string().min(3).max(30).valid( "hod", "employee").trim().required().messages({
                 'string.empty': "Role field can't be left empty",
                 'string.max': "Role cannot exceed 30 characters",
 

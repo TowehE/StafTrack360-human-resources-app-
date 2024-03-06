@@ -245,7 +245,6 @@ exports.logIn = async (req, res) => {
 
 
 
-
 // //Function for the user incase password is forgotten
 exports.forgotPassword = async (req, res) => {
 
