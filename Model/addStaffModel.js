@@ -33,6 +33,7 @@ const newStaffSchema = new mongoose.Schema({
     password:{
         type: String,
     },
+    
 
     companyId: {
         type: String,
@@ -61,11 +62,10 @@ const newStaffSchema = new mongoose.Schema({
        
     },
   
-//    departmentId:  {
-//          type: String,
-        
+   departmentId:  {
+         type: String,
       
-//     },
+    },
    
     lastLogout: {
         type: Date,

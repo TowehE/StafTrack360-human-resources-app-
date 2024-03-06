@@ -1,5 +1,6 @@
 const userModel = require('../Model/businessModel');
 const newStaffModel = require('../Model/addStaffModel')
+const newDepartmentModel = require("../Model/departmentModel")
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
  const {validateStaffLogin, validateChangePassword, validateUpdateStaff, validateUpdateStaffAdmin} = require('../validator/validator');
@@ -79,6 +80,16 @@ exports.addStaff = async (req, res) => {
         const salt = bcrypt.genSaltSync(12)
         const hashedPassword = bcrypt.hashSync(password, salt);
 
+          //Check Department
+        const departmentExists = await newDepartmentModel.findOne({ department: department });
+        console.log(departmentExists)
+        if (!departmentExists) {
+            return res.status(400).json({
+                message: 'Department not found',
+            });
+        }
+
+
            // Capitalize the first letter of fullName, department, and role
         const capitalizedFullName = capitalizeFirstLetter(fullName);
         const capitalizedDepartment = capitalizeFirstLetter(department);
@@ -89,7 +100,8 @@ exports.addStaff = async (req, res) => {
             fullName: capitalizedFullName, 
             email:email.toLowerCase(), 
             phoneNumber:phoneNumber,
-             department: capitalizedDepartment,
+            department: capitalizedDepartment,
+            departmentId: departmentExists._id,
             //  role: capitalizedRole,
             password: hashedPassword,
             companyId: companyId

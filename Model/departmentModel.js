@@ -6,15 +6,16 @@ const newDepartmentSchema = new mongoose.Schema({
         trim: true,
 
     },
-
     departmentHead:{
         type: String,
         trim: true,
     },
-    
     companyId: {
         type: String,
     },
+    // departmentId: {
+    //     type: String,
+    // },
 
 
 }, {timestamps: true});
@@ -23,3 +24,6 @@ const newDepartmentModel = mongoose.model("department", newDepartmentSchema);
 
 
 module.exports= newDepartmentModel
+
+
+

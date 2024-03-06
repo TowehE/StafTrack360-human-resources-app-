@@ -320,8 +320,3 @@ exports.deleteDepartment = async(req, res) => {
         });
     }
 };
-
-
-
-
-
