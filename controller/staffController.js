@@ -81,13 +81,18 @@ exports.addStaff = async (req, res) => {
         const hashedPassword = bcrypt.hashSync(password, salt);
 
           //Check Department
-        const departmentExists = await newDepartmentModel.findOne({ department: department });
-        console.log(departmentExists)
-        if (!departmentExists) {
+          const existingDepartment = await newDepartmentModel.findOne({ department: department, companyId });
+        if (!existingDepartment) {
             return res.status(400).json({
-                message: 'Department not found',
-            });
+                message: 'Department does not exist for the company. Please provide a valid department.' });
         }
+        // const departmentExists = await newDepartmentModel.findOne({ department: department });
+        // console.log(departmentExists)
+        // if (!departmentExists) {
+        //     return res.status(400).json({
+        //         message: 'Department already  exists',
+        //     });
+        // }
 
 
            // Capitalize the first letter of fullName, department, and role
@@ -100,8 +105,10 @@ exports.addStaff = async (req, res) => {
             fullName: capitalizedFullName, 
             email:email.toLowerCase(), 
             phoneNumber:phoneNumber,
+    
             department: capitalizedDepartment,
-            departmentId: departmentExists._id,
+            departmentId: existingDepartment._id,
+            // departmentId: departmentExists._id,
             //  role: capitalizedRole,
             password: hashedPassword,
             companyId: companyId
@@ -161,6 +168,7 @@ exports.logInStaff = async (req, res) => {
   
       const { email, password } = req.body;
       const staffMembers = await newStaffModel.find({ email: email.toLowerCase() });
+      console.log(staffMembers)
   
       if (!staffMembers || staffMembers.length === 0) {
         return res.status(404).json({
@@ -168,7 +176,7 @@ exports.logInStaff = async (req, res) => {
         });
         
       }
-  
+
       let authenticatedStaffMember;
   
       // Iterate through each staff member with the provided email
@@ -214,8 +222,9 @@ exports.logInStaff = async (req, res) => {
         return res.status(200).json({
           message: welcomeMessage,
           data:authenticatedStaffMember,
-          
+       
         });
+
       } else {
         return res.status(400).json({
           message: 'Sorry, this staff is not verified yet.'

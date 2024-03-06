@@ -18,7 +18,7 @@ exports.createDepartment = async (req, res) => {
                 message: "Company not found"
             });
         }
-        const { department, departmentHead } = req.body;
+        const { department } = req.body;
 
         const departmentExists = await newDepartmentModel.findOne({ department: capitalizeFirstLetter(department), companyId });
         if (departmentExists) {
@@ -27,28 +27,28 @@ exports.createDepartment = async (req, res) => {
             });
         }
 
-          // Check if the department head is an existing employee
-          const existingEmployee = await newStaffModel.findOne({ fullName: capitalizeFirstLetter(departmentHead), companyId });
-          if (!existingEmployee) {
-              return res.status(400).json({
-                  message: 'Head of Department must be an existing employee',
-              });
-          }
+        //   // Check if the department head is an existing employee
+        //   const existingEmployee = await newStaffModel.findOne({ fullName: departmentHead, companyId });
+        //   if (!existingEmployee) {
+        //       return res.status(400).json({
+        //           message: 'Head of Department must be an existing employee',
+        //       });
+        //   }
 
-        const departmentHeadExists = await newDepartmentModel.findOne({ departmentHead: capitalizeFirstLetter(departmentHead), companyId});
-        if (departmentHeadExists) {
-            return res.status(400).json({
-                message: 'Head of Department already exists',
-            });
-        }
+        // const departmentHeadExists = await newDepartmentModel.findOne({ departmentHead: departmentHead, companyId});
+        // if (departmentHeadExists) {
+        //     return res.status(400).json({
+        //         message: 'Head of Department already exists',
+        //     });
+        // }
 
-           // Update the employee role to "head of department"
-           existingEmployee.role = "hod";
-           await existingEmployee.save();
+        //    // Update the employee role to "head of department"
+        //    existingEmployee.role = "hod";
+        //    await existingEmployee.save();
    
         const departmentA = new newDepartmentModel({
             department: capitalizeFirstLetter(department).trim(),
-            departmentHead: capitalizeFirstLetter(departmentHead).trim(),
+            //departmentHead: capitalizeFirstLetter(departmentHead).trim(),
             companyId:companyId
         });
 
@@ -124,7 +124,29 @@ exports.getAllDepartment = async (req, res) => {
     }
 };
 
+//update to head of department
+exports.updateToHeadOfDepartment = async (req,res) =>{
+    try {
+        const departmentId = req.params.departmentId
 
+        const department = await newDepartmentModel.findById(departmentId);
+        
+        if (!department || department.length <= 0) {
+            return res.status(404).json({
+                message: "department not found in our database"
+            });
+        }
+
+        const data = {
+            
+        }
+        
+    } catch (error) {
+        return res.status(500).json({
+            message: "Internal Server Error: " + error.message,
+        });
+    }
+}
 
 
 
