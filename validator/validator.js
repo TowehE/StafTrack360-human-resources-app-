@@ -290,12 +290,12 @@ const validateperformanceRating = (data) => {
 
                 'any.required': 'TM is required'
             }),
-            QR: joi.number().integer().min(0).max(10).greater(-1).required().messages({
-                'number.base': 'QR must be a number',
-                'number.integer': 'QR must be an integer',
-                'number.min': 'QR must be at least 0',
-                'number.max': 'QR cannot be greater than 10',
-                'number.greater': 'QR cannot be negative',
+            OR: joi.number().integer().min(0).max(10).greater(-1).required().messages({
+                'number.base': 'OR must be a number',
+                'number.integer': 'OR must be an integer',
+                'number.min': 'OR must be at least 0',
+                'number.max': 'OR cannot be greater than 10',
+                'number.greater': 'OR cannot be negative',
 
                 'any.required': 'QR is required',
 

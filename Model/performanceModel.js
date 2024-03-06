@@ -7,7 +7,7 @@ const performanceratingSchema = new mongoose.Schema({
     TM: {
         type: Number,
     },
-    QR: {
+    OR: {
         type: Number,
     }, 
     CF: {
