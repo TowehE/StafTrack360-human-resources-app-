@@ -18,7 +18,7 @@ exports.AddperformanceRating = async (req, res) => {
         const staffId = req.params.staffId;
         const companyId = req.params.companyId;
 
-        const { TC, TM, QR, CF, DA, WQ } = req.body;
+        const { TC, TM, OR, CF, DA, WQ } = req.body;
 
       const today = new Date()
     
@@ -47,11 +47,11 @@ exports.AddperformanceRating = async (req, res) => {
             });
         }
 
-        const totalPerformance = (TC+TM+CF+QR+DA+WQ)
+        const totalPerformance = (TC+TM+CF+OR+DA+WQ)
         const cummulativePerformance = totalPerformance / 6;
 
         const performance = new performanceRatingModel({ 
-            TC, TM, QR, CF, DA, WQ, 
+            TC, TM, OR, CF, DA, WQ, 
             staffEmail: staff.email, 
             totalPerformance: totalPerformance, 
             cummulativePerformance: cummulativePerformance, 
@@ -171,13 +171,13 @@ exports.updatePerformance = async(req ,res) =>{
         const employeeData = {
             TC : req.body.TC || employee.TC,
             TM : req.body.TM || employee.TM,
-            QR : req.body.QR || employee.QR,
+            OR : req.body.OR || employee.OR,
             CF : req.body.CF || employee.CF,
             DA : req.body.DA || employee.DA,
             WQ : req.body.WQ || employee.WQ,
         }
 
-        const totalPerformance = (employeeData.TC+employeeData.TM+employeeData.CF+employeeData.QR+employeeData.DA+employeeData.WQ)
+        const totalPerformance = (employeeData.TC+employeeData.TM+employeeData.CF+employeeData.OR+employeeData.DA+employeeData.WQ)
         const cummulativePerformance = totalPerformance / 6;
 
         employeeData.totalPerformance = totalPerformance;
@@ -255,10 +255,10 @@ exports.deleteScore = async (req, res) => {
         }
 
         // Reset the employee's score fields to their default values or remove them entirely based on your schema design
-        // For example, if you have separate fields for each score component (TC, TM, QR, CF, DA, WQ), you can set them to 0
+        // For example, if you have separate fields for each score component (TC, TM, OR, CF, DA, WQ), you can set them to 0
         employee.TC = 0;
         employee.TM = 0;
-        employee.QR = 0;
+        employee.OR = 0;
         employee.CF = 0;
         employee.DA = 0;
         employee.WQ = 0;
@@ -287,6 +287,12 @@ exports.deleteScore = async (req, res) => {
 exports.getPerformanceByCreatedAt = async (req, res) => {
     try {
         const staffId = req.params.staffId
+        const staffMember = await newStaffModel.findById(staffId);
+        if (!staffMember) {
+            return res.status(404).json({ message: 'Staff member not found' });
+        }
+        const companyId = staffMember.companyId;
+
 
         const today = moment()
         const intervals = ["monthly", "quarterly", "yearly"]
@@ -306,7 +312,7 @@ exports.getPerformanceByCreatedAt = async (req, res) => {
             endDate = today.clone().endOf('year');
         }
 
-            const performanceRatings = await performanceRatingModel.find({staffId,
+            const performanceRatings = await performanceRatingModel.find({staffId, companyId,
                 createdAt: { $gte: startDate, $lte: endDate }
             });
 
