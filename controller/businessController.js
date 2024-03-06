@@ -85,7 +85,8 @@ exports.signUp = async (req, res) => {
                 businessEmail: business.businessEmail,
                 firstName: business.firstName,
                 lastName: business.lastName,
-                businessName: business.businessName
+                businessName: business.businessName,
+                isPremium: business.isPremium
             }, process.env.secret, { expiresIn: "600s" });
             business.token = token;
             const subject = 'Email Verification'
