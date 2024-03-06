@@ -103,6 +103,7 @@ exports.viewAll = async (req, res) => {
 
         return res.status(200).json({
             message:"Performance found",
+            data:performance,
             performance: performanceData,
             //data: performance
         })
