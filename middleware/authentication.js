@@ -75,7 +75,11 @@ function isWithinTrialPeriod(user) {
 // Middleware to check if the user has access to premium features
 function checkPremiumAccess(req, res, next) {
     authenticate(req, res, async() => {
-        const user = await userModel.findById(req.user.userId);
+        let user;
+        user = await userModel.findById(req.user.userId);
+        if (!user) {
+        user = await staffModel.findById(req.user.userId);
+        }
         if (!user) {
             return res.status(404).json({
                 message: "Not authorized: User not found",
