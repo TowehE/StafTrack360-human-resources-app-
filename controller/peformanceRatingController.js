@@ -94,18 +94,19 @@ exports.viewAll = async (req, res) => {
         }
       
         
-        const performanceData = performance.map(performance => ({
-            staffEmail: performance.staffEmail,
-            staffId: performance.staffId,
-            commulativePerformance: performance.cummulativePerformance,
-            totalPerformance: performance.totalPerformance
-        }));
+        // const performanceData = performance.map(performance => ({
+        //     performance: performance,
+        //     staffEmail: performance.staffEmail,
+        //     staffId: performance.staffId,
+        //     commulativePerformance: performance.cummulativePerformance,
+        //     totalPerformance: performance.totalPerformance
+        // }));
 
         return res.status(200).json({
             message:"Performance found",
-            data:performance,
-            performance: performanceData,
-            //data: performance
+          
+            // performance: performanceData,
+            data: performance
         })
       
     } catch (error) {
