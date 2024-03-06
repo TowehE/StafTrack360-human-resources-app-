@@ -20,12 +20,27 @@ exports.AddperformanceRating = async (req, res) => {
 
         const { TC, TM, QR, CF, DA, WQ } = req.body;
 
+      const today = new Date()
+    
         const staff = await newStaffModel.findById(staffId);
         if (!staff) {
             return res.status(404).json({
                 message: "Staff not found",
             })
         }
+        console.log(staff)
+          
+        const checkPerformance = await performanceRatingModel.findOne({staffEmail: staff.email})
+        console.log(checkPerformance.createdAt.getMonth())
+        if(checkPerformance.createdAt.getMonth() === today.getMonth()) {
+            if (checkPerformance) {
+                return res.status(404).json({
+                    message: "performance already exists for this month",
+                })
+              }
+        }
+    
+
         const company = await userModel.findById(companyId);
         if (!company) {
             return res.status(404).json({
