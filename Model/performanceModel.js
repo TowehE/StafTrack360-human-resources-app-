@@ -22,6 +22,12 @@ const performanceratingSchema = new mongoose.Schema({
     staffEmail: {
         type: String,
     },
+    staffDepartment: {
+        type: String,
+    },
+    staffName: {
+        type: String,
+    },
     company: {
         type: String,
     },

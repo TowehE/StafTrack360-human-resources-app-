@@ -10,6 +10,9 @@ const resetHTML = require('../resetHTML');
 const {welcomeEmail} = require('../welcome');
 const performanceRatingModel = require('../Model/performanceModel');
 const newDepartmentModel = require('../Model/departmentModel');
+const cloudinary = require('../middleware/cloudinary')
+const fs = require("fs");
+const path = require("path");
 require('dotenv').config();
 
 
@@ -244,6 +247,168 @@ exports.logIn = async (req, res) => {
 }
 
 
+// Function to upload a Logo image
+const uploadImageToCloudinary = async (profilePicture, user) => {
+    try {
+        if (user.profilePicture && user.profilePicture.public_id) {
+            return await cloudinary.uploader.upload(profilePicture.tempFilePath, {
+                public_id: user.profilePicture.public_id,
+                overwrite: true
+            });
+        } else {
+            return await cloudinary.uploader.upload(profilePicture.tempFilePath, {
+                public_id: `user_image_${user._id}`,
+                folder: "StaffTrack360"
+            });
+        }
+    } catch (error) {
+        throw new Error("Error uploading image to Cloudinary: " + error.message);
+    }
+};
+
+exports.uploadLogo = async (req, res) => {
+    try {
+        const userId = req.params.userId;
+        const company = await userModel.findById(userId);
+        
+        if (!company) {
+            return res.status(404).json({
+                message: "Company not found in our database"
+            });
+        }
+        
+        if (!req.files || !req.files.profilePicture) {
+            return res.status(400).json({ message: 'No image provided' });
+        }
+  
+        const profilePicture = req.files.profilePicture;
+
+        // Check if only one file is uploaded
+        if (profilePicture.length > 1) {
+            return res.status(400).json({
+                message: "Please upload only one image file",
+            });
+        }
+  
+        const fileExtension = path.extname(profilePicture.name).toLowerCase();
+        const allowedExtensions = ['.jpg', '.jpeg', '.png', '.gif'];
+        
+        if (!allowedExtensions.includes(fileExtension)) {
+            return res.status(400).json({ message: 'Only image files are allowed.' });
+        }
+  
+        let fileUploader;
+        try {
+            fileUploader = await uploadImageToCloudinary(profilePicture, company);
+            await fs.promises.unlink(req.files.profilePicture.tempFilePath);
+        } catch (uploadError) {
+            return res.status(500).json({ message: 'Error uploading image' + uploadError });
+        }
+        
+        if (fileUploader) {
+            const companyPicture = {
+                public_id: fileUploader.public_id,
+                url: fileUploader.secure_url
+            };
+            
+            const updatedCompany = await userModel.findByIdAndUpdate(userId, 
+                { profilePicture: companyPicture }, { new: true });
+  
+            return res.status(200).json({
+                message: 'Profile picture uploaded successfully',
+                data: updatedCompany
+            });
+        } else {
+            return res.status(500).json({
+                 message: 'Failed to upload an image' });
+        }
+    } catch (error) {
+        return res.status(500).json({ 
+            message: 'Internal Server Error' + error.message });
+    }
+};
+
+// // Function to upload a Logo image
+// const uploadImageToCloudinary = async (profilePicture, user) => {
+//     try {
+//         if (user.profilePicture && user.profilePicture.public_id) {
+//             return await cloudinary.uploader.upload(profilePicture.tempFilePath, {
+//                 public_id: user.profilePicture.public_id,
+//                 overwrite: true
+//             });
+//         } else {
+//             return await cloudinary.uploader.upload(profilePicture.tempFilePath, {
+//                 public_id: `user_image_${user._id}`,
+//                 folder: "StaffTrack360"
+//             });
+//         }
+//     } catch (error) {
+//         throw new Error("Error uploading image to Cloudinary: " + error.message);
+//     }
+//   };
+
+
+// exports.uploadLogo = async (req, res) => {
+//     try {
+//         const userId = req.params.userId;
+//         const company = await userModel.findById(userId);
+        
+//         if (!company) {
+//             return res.status(404).json({
+//                 message: "company not found in our database"
+//             });
+//         }
+        
+//         if (!req.files || !req.files.profilePicture) {
+//             return res.status(400).json({ message: 'No image provided' });
+//         }
+  
+//         const profilePicture = req.files.profilePicture;
+
+//         // Check if only one file is uploaded
+//         if (profilePicture.length > 1) {
+//             return res.status(400).json({
+//                 message: "Please upload only one image file",
+//             });
+//         }
+  
+//         const fileExtension = path.extname(profilePicture.name).toLowerCase();
+//         const allowedExtensions = ['.jpg', '.jpeg', '.png', '.gif'];
+        
+//         if (!allowedExtensions.includes(fileExtension)) {
+//             return res.status(400).json({ message: 'Only image files are allowed.' });
+//         }
+  
+//         let fileUploader;
+//         try {
+//             fileUploader = await uploadImageToCloudinary(profilePicture, staff);
+//             await fs.promises.unlink(req.files.profilePicture.tempFilePath);
+//         } catch (uploadError) {
+//             return res.status(500).json({ message: 'Error uploading  image' +uploadError});
+//         }
+        
+//         if (fileUploader) {
+//             const companyPicture = {
+//                 public_id: fileUploader.public_id,
+//                 url: fileUploader.secure_url
+//             };
+            
+//             const updatedcompanyPicture = await userModel.findByIdAndUpdate(userId, 
+//                 { profilePicture: companyPicture }, { new: true });
+  
+//             return res.status(200).json({
+//                 message: 'Profile picture uploaded successfully',
+//                 data: updatedcompanyPicture
+//             });
+//         } else {
+//             return res.status(500).json({
+//                  message: 'Failed to upload an image' });
+//         }
+//     } catch (error) {
+//         return res.status(500).json({ 
+//             message: 'Internal Server Error' + error.message });
+//     }
+//   };
 
 
 // //Function for the user incase password is forgotten

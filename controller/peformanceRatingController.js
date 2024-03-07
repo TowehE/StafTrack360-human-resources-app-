@@ -56,7 +56,9 @@ exports.AddperformanceRating = async (req, res) => {
             totalPerformance: totalPerformance, 
             cummulativePerformance: cummulativePerformance, 
             staffId: staffId, 
-            company: company.id
+            company: company.id,
+            staffName:staff.fullName,
+            staffDepartment: staff.department
         });
         if (!performance) {
             return res.status(404).json({
@@ -83,38 +85,67 @@ exports.AddperformanceRating = async (req, res) => {
 }
 
 //Function to view all employees performance
+// exports.viewAll = async (req, res) => {
+//     try {
+//         const businessId = req.params.businessId;
+//         const performance = await performanceRatingModel.find({ company: businessId });
+        
+//         if (!performance || performance.length === 0) {
+//             return res.status(404).json({
+//                 message: "No performance found",
+         
+//              });
+//         }
+      
+//         return res.status(200).json({
+//             message: "Performance found",
+//             data: performance
+//         });
+//     } catch (error) {
+//         return res.status(500).json({
+//             message: "Internal Server Error: " + error.message,
+//         });
+//     }
+// };
+
 exports.viewAll = async (req, res) => {
     try {
-        const businessId = req.params.businessId
-        const performance = await performanceRatingModel.find({company: businessId});
+        const businessId = req.params.businessId;
+        const performance = await performanceRatingModel.find({ company: businessId });
+
         if (!performance || performance.length === 0) {
             return res.status(404).json({
                 message: "No performance found",
-            })
+            });
         }
-      
-        
-        // const performanceData = performance.map(performance => ({
-        //     performance: performance,
-        //     staffEmail: performance.staffEmail,
-        //     staffId: performance.staffId,
-        //     commulativePerformance: performance.cummulativePerformance,
-        //     totalPerformance: performance.totalPerformance
-        // }));
+
+        // Construct the response object including staffDepartment and staffName
+        const performanceData = performance.map(performance => ({
+            TC: performance.TC,
+            TM: performance.TM,
+            OR: performance.OR,
+            CF: performance.CF,
+            DA: performance.DA,
+            WQ: performance.WQ,
+            staffEmail: performance.staffEmail,
+            staffDepartment: performance.staffDepartment,
+            staffName: performance.staffName,
+            cummulativePerformance: performance.cummulativePerformance,
+            totalPerformance: performance.totalPerformance
+        }));
+        console.log(performanceData)
 
         return res.status(200).json({
-            message:"Performance found",
-          
-            // performance: performanceData,
-            data: performance
-        })
-      
+            message: "Performance found",
+            data: performanceData
+        });
+
     } catch (error) {
         return res.status(500).json({
-            message: "Internal Server Error" + error.message,
-        })
+            message: "Internal Server Error: " + error.message
+        });
     }
-}
+};
 
 
 //Function to view a particular employee performance

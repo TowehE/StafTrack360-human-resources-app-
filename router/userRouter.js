@@ -7,7 +7,7 @@ const {
      verify,
       logIn, 
       forgotPassword, 
-      
+      uploadLogo,
       resetPassword,
        signOut,
         
@@ -42,6 +42,10 @@ router.get('/allBusiness',authenticate, getAllBusiness);
 
 //endpoint to get a business account
 router.get('/getOneBu/:id',authenticate, aCompany);
+
+//endpoint to upload a picture
+router.put("/uploadlogo/:userId", authenticate,uploadLogo)
+
 
 //endpoint to  delete business
 router.get('/removeCompany/:id',authenticate, deleteCompany);

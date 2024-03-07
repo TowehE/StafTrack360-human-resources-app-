@@ -51,6 +51,16 @@
              default: false
              },
 
+        profilePicture: [{
+                public_id: {
+                    type: String,
+                },
+                url: {
+                    type: String,
+        
+                }
+            }],
+
         performanceRating: [{
             type: mongoose.Schema.Types.ObjectId,
             ref: 'performance'
