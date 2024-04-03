@@ -87,7 +87,7 @@ function checkPremiumAccess(req, res, next) {
         }
     if (req.user && (req.user.isPremium  || isWithinTrialPeriod(user))) {
         // User is subscribed or within trial period, grant access
-
+        req.user.isPremium = true; 
         next();
     } else {
         // User does  not have access to premium features

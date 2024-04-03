@@ -324,7 +324,7 @@ exports.getPerformanceByCreatedAt = async (req, res) => {
         if (!staffMember) {
             return res.status(404).json({ message: 'Staff member not found' });
         }
-        const companyId = staffMember.companyId;
+        // const companyId = staffMember.companyId;
 
 
         const today = moment()
@@ -345,7 +345,7 @@ exports.getPerformanceByCreatedAt = async (req, res) => {
             endDate = today.clone().endOf('year');
         }
 
-            const performanceRatings = await performanceRatingModel.find({staffId, companyId,
+            const performanceRatings = await performanceRatingModel.find({staffId,
                 createdAt: { $gte: startDate, $lte: endDate }
             });
 
